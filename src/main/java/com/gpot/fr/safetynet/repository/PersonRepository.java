@@ -1,15 +1,14 @@
 package com.gpot.fr.safetynet.repository;
 
 import com.gpot.fr.safetynet.entity.Person;
-
+import java.util.List;
 public interface PersonRepository {
-
-    void save(Person person);
-
+    Person save(Person person);
     void delete(String firstName, String lastName);
     Person find(String firstName, String lastName);
+    int findID(String firstName, String lastName);
+    List<Person> findAll();
 
-    void modify(String firstName, String lastName, String newAddress, String newCity, String newZip, String newPhone, String newEmail);
-    int findID(String firstName, String lastName) throws Exception;
+    Person update(Person person);
 }
 

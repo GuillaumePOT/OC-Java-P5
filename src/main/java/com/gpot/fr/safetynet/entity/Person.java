@@ -1,8 +1,6 @@
 package com.gpot.fr.safetynet.entity;
 
 import lombok.*;
-import org.springframework.stereotype.Component;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

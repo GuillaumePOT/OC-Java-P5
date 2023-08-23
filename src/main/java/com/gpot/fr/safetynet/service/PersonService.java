@@ -1,17 +1,16 @@
 package com.gpot.fr.safetynet.service;
 
+import com.gpot.fr.safetynet.dto.PersonDto;
 import com.gpot.fr.safetynet.entity.Person;
-import com.gpot.fr.safetynet.repository.imp.PersonRepositoryImp;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 public interface PersonService {
 
-    public void save(Person person);
+    Person save(PersonDto dto);
 
     void delete(String firstName, String lastName);
+    List<Person> findAll();
 
-    void modify(String firstName, String lastName, String newAddressnString, String newCity, String newZip, String newPhone, String newEmail);
+    Person update(PersonDto dto);
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Data {
     private List<Person> persons;
-    private List<Object> firestations;
+    private List<FireStation> firestations;
     private List<Object> medicalrecords;
 
 }

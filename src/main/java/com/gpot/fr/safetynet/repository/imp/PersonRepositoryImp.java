@@ -13,14 +13,17 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
     protected static final List<Person> PERSON_LIST = new ArrayList<>();
 
     @Override
-    public void save(Person person) {
+    public Person save(Person person) {
         PERSON_LIST.add(person);
+        return person;
     }
 
     @Override
     public void delete(String firstName, String lastName) {
-        PERSON_LIST.remove(find(firstName, lastName));
+        PERSON_LIST.remove(PERSON_LIST.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
+                .findFirst().orElse(null));
     }
+
     @Override
     public Person find(String firstName, String lastName) {
         for (Person person : PERSON_LIST) {
@@ -30,21 +33,34 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
         }
         return null;
     }
+
     @Override
-    public int findID(String firstName, String lastName)  {
-            for (Person person : PERSON_LIST) {
-                if (firstName.equals(person.getFirstName()) && lastName.equals(person.getLastName())) {
-                    return PERSON_LIST.indexOf(person);
-                }
+    public int findID(String firstName, String lastName) {
+        for (Person person : PERSON_LIST) {
+            if (firstName.equals(person.getFirstName()) && lastName.equals(person.getLastName())) {
+                return PERSON_LIST.indexOf(person);
             }
+        }
         return -1;
     }
+
     @Override
-    public void modify(String firstName, String lastName, String newAddress, String newCity, String newZip, String newPhone, String newEmail) {
-        Person person = new Person(firstName,lastName,newAddress,newCity,newZip,newPhone,newEmail);
-        PERSON_LIST.set(findID(firstName,lastName),person);
-    }
-    public List<Person> getPersonList() {
+    public List<Person> findAll() {
         return PERSON_LIST;
     }
+
+    @Override
+    public Person update(Person person) {
+        PERSON_LIST.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.getFirstName()) && p.getLastName().equalsIgnoreCase(person.getLastName()))
+                .findFirst().ifPresent(personFound -> {
+                    personFound.setAddress(person.getAddress());
+                    personFound.setCity(person.getCity());
+                    personFound.setZip(person.getZip());
+                    personFound.setPhone(person.getPhone());
+                    personFound.setEmail(person.getEmail());
+                });
+        return person;
+    }
+
+
 }

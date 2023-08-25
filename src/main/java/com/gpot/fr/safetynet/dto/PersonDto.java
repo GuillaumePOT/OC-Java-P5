@@ -2,7 +2,6 @@ package com.gpot.fr.safetynet.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 @Getter
 @NoArgsConstructor
 public class PersonDto {

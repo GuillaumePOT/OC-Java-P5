@@ -5,7 +5,6 @@ import com.gpot.fr.safetynet.repository.FireStationRepository;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
-
 @Repository
 class FireStationRepositoryImp extends DataRepository implements FireStationRepository {
     protected static final List<FireStation> FIRE_STATION_LIST = new ArrayList<>();

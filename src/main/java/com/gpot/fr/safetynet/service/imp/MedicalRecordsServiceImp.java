@@ -23,17 +23,14 @@ public class MedicalRecordsServiceImp implements MedicalRecordsService {
                 .build();
         return medicalRecordsRepository.save(medicalRecords);
     }
-
     @Override
     public void delete(String firstName, String lastName) {
         medicalRecordsRepository.delete(firstName, lastName);
     }
-
     @Override
     public List<MedicalRecords> findAll() {
         return medicalRecordsRepository.findAll();
     }
-
     @Override
     public MedicalRecords update(MedicalRecordsDto dto) {
         final var medicalRecords =  MedicalRecords.builder()

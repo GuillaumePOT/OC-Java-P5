@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static com.gpot.fr.safetynet.repository.imp.FireStationRepositoryImp.FIRE_STATION_LIST;
+import static com.gpot.fr.safetynet.repository.imp.MedicalRecordsRepositoryImp.MEDICAL_RECORDS_LIST;
 import static com.gpot.fr.safetynet.repository.imp.PersonRepositoryImp.PERSON_LIST;
 
 public abstract class DataRepository {
@@ -15,6 +16,6 @@ public abstract class DataRepository {
         Data data = objectMapper.readValue(new File("src/main/resources/Data.json"),Data.class);
         PERSON_LIST.addAll(data.getPersons());
         FIRE_STATION_LIST.addAll(data.getFirestations());
-
+        MEDICAL_RECORDS_LIST.addAll(data.getMedicalrecords());
     }
 }

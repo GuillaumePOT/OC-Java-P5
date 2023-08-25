@@ -3,7 +3,6 @@ package com.gpot.fr.safetynet.entity;
 import lombok.*;
 
 import java.util.List;
-
 @Getter
 @Builder
 @NoArgsConstructor

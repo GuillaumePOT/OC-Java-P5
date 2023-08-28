@@ -11,6 +11,5 @@ import java.util.List;
 public class Data {
     private List<Person> persons;
     private List<FireStation> firestations;
-    private List<Object> medicalrecords;
-
+    private List<MedicalRecords> medicalrecords;
 }

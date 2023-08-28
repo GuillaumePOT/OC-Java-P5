@@ -18,6 +18,4 @@ public class Person {
     private String phone;
     @Setter
     private String zip;
-
-
 }

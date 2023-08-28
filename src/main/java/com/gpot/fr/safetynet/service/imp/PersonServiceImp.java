@@ -34,7 +34,6 @@ public class PersonServiceImp implements PersonService {
     public List<Person> findAll() {
         return personRepository.findAll();
     }
-
     @Override
     public Person update(PersonDto dto) {
         final var person =  Person.builder()

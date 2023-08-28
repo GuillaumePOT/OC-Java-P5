@@ -17,13 +17,11 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
         PERSON_LIST.add(person);
         return person;
     }
-
     @Override
     public void delete(String firstName, String lastName) {
         PERSON_LIST.remove(PERSON_LIST.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
                 .findFirst().orElse(null));
     }
-
     @Override
     public Person find(String firstName, String lastName) {
         for (Person person : PERSON_LIST) {
@@ -33,7 +31,6 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
         }
         return null;
     }
-
     @Override
     public int findID(String firstName, String lastName) {
         for (Person person : PERSON_LIST) {
@@ -43,12 +40,10 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
         }
         return -1;
     }
-
     @Override
     public List<Person> findAll() {
         return PERSON_LIST;
     }
-
     @Override
     public Person update(Person person) {
         PERSON_LIST.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.getFirstName()) && p.getLastName().equalsIgnoreCase(person.getLastName()))
@@ -61,6 +56,4 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
                 });
         return person;
     }
-
-
 }

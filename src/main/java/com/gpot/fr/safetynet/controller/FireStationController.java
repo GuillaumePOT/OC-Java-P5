@@ -8,12 +8,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
 @AllArgsConstructor
 class FireStationController {
     private final FireStationService fireStationService ;
-
     @PostMapping("/firestation")
     public ResponseEntity<FireStation> add(@RequestBody final FirestationDto dto){
        final var fireStation = fireStationService.save(dto);

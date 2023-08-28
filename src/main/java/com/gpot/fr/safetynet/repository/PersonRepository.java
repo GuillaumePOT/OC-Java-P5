@@ -8,7 +8,6 @@ public interface PersonRepository {
     Person find(String firstName, String lastName);
     int findID(String firstName, String lastName);
     List<Person> findAll();
-
     Person update(Person person);
 }
 

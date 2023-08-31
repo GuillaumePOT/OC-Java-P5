@@ -5,17 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+@NoArgsConstructor
 @Getter
 @AllArgsConstructor
 @Builder
-@NoArgsConstructor
-class PersonInfoModel {
+public class FireStationNumberModel {
     private String firstName;
     private String lastName;
     private String address;
-    private String birthdate;
-    private List<String> medication;
-    private List<String> allergies;
+    private String phone;
 }

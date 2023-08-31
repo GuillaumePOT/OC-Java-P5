@@ -8,4 +8,5 @@ public interface FireStationService {
     void delete(String address);
     FireStation update(FirestationDto fireStation);
     List<FireStation> findAll();
+    List<String> findAddressByStationNumber(String stationNumber);
 }

@@ -10,4 +10,9 @@ public interface PersonService {
     void delete(String firstName, String lastName);
     List<Person> findAll();
     Person update(PersonDto dto);
+    List<String> findEmailByCity(String city);
+
+    List<Person> findPersonByAddress(List<String> addressList);
+
+    List<String> findPhoneByStation(List<String> addressList);
 }

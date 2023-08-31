@@ -5,6 +5,8 @@ import com.gpot.fr.safetynet.repository.FireStationRepository;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Repository
 class FireStationRepositoryImp extends DataRepository implements FireStationRepository {
     protected static final List<FireStation> FIRE_STATION_LIST = new ArrayList<>();
@@ -22,6 +24,12 @@ class FireStationRepositoryImp extends DataRepository implements FireStationRepo
     public List<FireStation> findAll() {
         return FIRE_STATION_LIST;
     }
+
+    @Override
+    public List<String> findAddressByStationNumber(String stationNumber) {
+        return FIRE_STATION_LIST.stream().filter(p-> p.getStation().equalsIgnoreCase(stationNumber)).map(FireStation::getAddress).collect(Collectors.toList());
+    }
+
     @Override
     public FireStation update(FireStation fireStation) {
         FIRE_STATION_LIST.stream().filter(p -> p.getAddress().equalsIgnoreCase(fireStation.getAddress()))

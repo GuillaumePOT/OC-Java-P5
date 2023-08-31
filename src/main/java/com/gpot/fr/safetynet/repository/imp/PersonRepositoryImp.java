@@ -2,11 +2,14 @@ package com.gpot.fr.safetynet.repository.imp;
 
 
 import com.gpot.fr.safetynet.entity.Person;
+import com.gpot.fr.safetynet.entity.Person.PersonBuilder;
 import com.gpot.fr.safetynet.repository.PersonRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 public class PersonRepositoryImp extends DataRepository implements PersonRepository {
@@ -23,24 +26,6 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
                 .findFirst().orElse(null));
     }
     @Override
-    public Person find(String firstName, String lastName) {
-        for (Person person : PERSON_LIST) {
-            if (firstName.equals(person.getFirstName()) && lastName.equals(person.getLastName())) {
-                return person;
-            }
-        }
-        return null;
-    }
-    @Override
-    public int findID(String firstName, String lastName) {
-        for (Person person : PERSON_LIST) {
-            if (firstName.equals(person.getFirstName()) && lastName.equals(person.getLastName())) {
-                return PERSON_LIST.indexOf(person);
-            }
-        }
-        return -1;
-    }
-    @Override
     public List<Person> findAll() {
         return PERSON_LIST;
     }
@@ -55,5 +40,29 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
                     personFound.setEmail(person.getEmail());
                 });
         return person;
+    }
+
+    @Override
+    public List<String> findEmailByCity(String city) {
+        return PERSON_LIST.stream().filter(p -> p.getCity().equalsIgnoreCase(city)).map(Person::getEmail).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Person> findPersonByAddress(List<String> addressList) {
+      List<Person> personList = new ArrayList<>();
+        for (String address : addressList){
+            PERSON_LIST.stream().filter(p -> p.getAddress().equalsIgnoreCase(address))
+                    .map(personList::add);
+        }
+        return personList;
+    }
+
+    @Override
+    public List<String> findPhoneByStation(List<String> addressList) {
+        List<String> phoneList =  new ArrayList<>();
+        for (String address : addressList ){
+            phoneList = PERSON_LIST.stream().filter(p -> p.getCity().equalsIgnoreCase(address)).map(Person::getPhone).collect(Collectors.toList());
+        }
+        return  phoneList;
     }
 }

@@ -7,4 +7,5 @@ public interface FireStationRepository {
     void delete(String address);
     FireStation update(FireStation fireStation);
     List<FireStation> findAll();
+    List<String> findAddressByStationNumber(String stationNumber);
 }

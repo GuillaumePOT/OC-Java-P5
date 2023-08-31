@@ -36,4 +36,9 @@ public class FireStationServiceImp implements FireStationService {
     public List<FireStation> findAll() {
         return fireStationRepository.findAll();
     }
+
+    @Override
+    public List<String> findAddressByStationNumber(String stationNumber) {
+        return fireStationRepository.findAddressByStationNumber(stationNumber);
+    }
 }

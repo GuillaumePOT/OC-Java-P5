@@ -3,6 +3,7 @@ package com.gpot.fr.safetynet.service.imp;
 import com.gpot.fr.safetynet.dto.PersonDto;
 import com.gpot.fr.safetynet.entity.Person;
 import com.gpot.fr.safetynet.repository.PersonRepository;
+import com.gpot.fr.safetynet.repository.imp.PersonRepositoryImp;
 import com.gpot.fr.safetynet.service.PersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,5 +48,20 @@ public class PersonServiceImp implements PersonService {
                 .build();
         personRepository.update(person);
         return person;
+    }
+
+    @Override
+    public List<String> findEmailByCity(String city) {
+        return personRepository.findEmailByCity(city);
+    }
+
+    @Override
+    public List<Person> findPersonByAddress(List<String> addressList) {
+        return personRepository.findPersonByAddress(addressList);
+    }
+
+    @Override
+    public List<String> findPhoneByStation(List<String> addressList) {
+        return personRepository.findPhoneByStation(addressList);
     }
 }

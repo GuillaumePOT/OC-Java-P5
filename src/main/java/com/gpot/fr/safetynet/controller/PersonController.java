@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 public class PersonController {
@@ -26,5 +29,11 @@ public class PersonController {
     public  ResponseEntity<Person> update(@RequestBody final PersonDto dto){
         final var person = personService.update(dto);
         return new ResponseEntity<>(person,HttpStatus.OK);
+    }
+
+    @GetMapping("/communityEmail")
+    public ResponseEntity<List<String>> findEmailByCity(@RequestParam (name = "city") String city){
+        List<String> emailList = personService.findEmailByCity(city);
+        return new ResponseEntity<>(emailList,HttpStatus.OK);
     }
 }

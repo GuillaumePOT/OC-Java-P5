@@ -7,15 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor
 @Getter
 @AllArgsConstructor
 @Builder
-@NoArgsConstructor
-public class PersonInfoModel {
+public class HomeByStationListModel {
     private String firstName;
     private String lastName;
+    private String phone;
     private String address;
     private String birthdate;
-    private List<String> medication;
     private List<String> allergies;
+    private List<String> medication;
+
 }

@@ -41,4 +41,9 @@ public class FireStationServiceImp implements FireStationService {
     public List<String> findAddressByStationNumber(String stationNumber) {
         return fireStationRepository.findAddressByStationNumber(stationNumber);
     }
+
+    @Override
+    public String findStationNumberByAddress(String address) {
+        return fireStationRepository.findStationNumberByAddress(address);
+    }
 }

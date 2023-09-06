@@ -12,7 +12,10 @@ public interface PersonService {
     Person update(PersonDto dto);
     List<String> findEmailByCity(String city);
 
-    List<Person> findPersonByAddress(List<String> addressList);
+    List<Person> findPersonByAddressList(List<String> addressList);
+    List<Person> findPersonByAddress(String address);
 
     List<String> findPhoneByStation(List<String> addressList);
+
+    List<Person> findPersonsByFirstAndLastName(String firstName, String lastName);
 }

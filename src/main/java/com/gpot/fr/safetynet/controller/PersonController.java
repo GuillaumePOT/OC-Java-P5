@@ -31,9 +31,4 @@ public class PersonController {
         return new ResponseEntity<>(person,HttpStatus.OK);
     }
 
-    @GetMapping("/communityEmail")
-    public ResponseEntity<List<String>> findEmailByCity(@RequestParam (name = "city") String city){
-        List<String> emailList = personService.findEmailByCity(city);
-        return new ResponseEntity<>(emailList,HttpStatus.OK);
-    }
 }

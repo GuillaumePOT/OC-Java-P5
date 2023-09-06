@@ -14,4 +14,5 @@ public class FireStationNumberModel {
     private String lastName;
     private String address;
     private String phone;
+    private String birthdate;
 }

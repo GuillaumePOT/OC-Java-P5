@@ -9,4 +9,6 @@ public interface FireStationService {
     FireStation update(FirestationDto fireStation);
     List<FireStation> findAll();
     List<String> findAddressByStationNumber(String stationNumber);
+
+    String findStationNumberByAddress(String address);
 }

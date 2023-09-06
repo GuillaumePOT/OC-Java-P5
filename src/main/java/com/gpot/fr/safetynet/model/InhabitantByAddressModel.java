@@ -11,11 +11,12 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class PersonInfoModel {
+public class InhabitantByAddressModel {
     private String firstName;
     private String lastName;
-    private String address;
+    private String phone;
     private String birthdate;
-    private List<String> medication;
     private List<String> allergies;
+    private List<String> medication;
+
 }

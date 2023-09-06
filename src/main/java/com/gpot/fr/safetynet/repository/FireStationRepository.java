@@ -8,4 +8,6 @@ public interface FireStationRepository {
     FireStation update(FireStation fireStation);
     List<FireStation> findAll();
     List<String> findAddressByStationNumber(String stationNumber);
+
+    String findStationNumberByAddress(String address);
 }

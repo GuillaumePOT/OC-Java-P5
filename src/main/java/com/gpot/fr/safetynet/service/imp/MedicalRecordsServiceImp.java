@@ -2,6 +2,7 @@ package com.gpot.fr.safetynet.service.imp;
 
 import com.gpot.fr.safetynet.dto.MedicalRecordsDto;
 import com.gpot.fr.safetynet.entity.MedicalRecords;
+import com.gpot.fr.safetynet.entity.Person;
 import com.gpot.fr.safetynet.repository.MedicalRecordsRepository;
 import com.gpot.fr.safetynet.service.MedicalRecordsService;
 import lombok.AllArgsConstructor;
@@ -41,5 +42,10 @@ public class MedicalRecordsServiceImp implements MedicalRecordsService {
                 .birthdate(dto.getBirthdate())
                 .build();
         return medicalRecordsRepository.update(medicalRecords);
+    }
+
+    @Override
+    public List<MedicalRecords> findRecordsByPersonList(List<Person> personList) {
+        return medicalRecordsRepository.findRecordsByPersonList(personList);
     }
 }

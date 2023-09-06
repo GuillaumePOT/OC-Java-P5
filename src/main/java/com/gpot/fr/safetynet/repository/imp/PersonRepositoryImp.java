@@ -49,20 +49,37 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
     }
 
     @Override
-    public List<Person> findPersonByAddress(List<String> addressList) {
+    public List<Person> findPersonByAddressList(List<String> addressList) {
         List<Person> personList = new ArrayList<>();
-        addressList.forEach(address -> {
-            PERSON_LIST.stream().filter(p -> p.getAddress().equalsIgnoreCase(address))
-                    .forEach(personList::add);
-        });
+        for (String address : addressList) {
+            personList.addAll(findPersonByAddress(address));
+        }
         return personList;
     }
+
+    @Override
+    public List<Person> findPersonByAddress(String address) {
+        List<Person> personList = new ArrayList<>();
+        PERSON_LIST.stream().filter(p -> p.getAddress().equalsIgnoreCase(address))
+                .forEach(personList::add);
+        return personList;
+    }
+
     @Override
     public List<String> findPhoneByStation(List<String> addressList) {
         List<String> phoneList = new ArrayList<>();
-        for (String address : addressList) {
-            phoneList = PERSON_LIST.stream().filter(p -> p.getCity().equalsIgnoreCase(address)).map(Person::getPhone).collect(Collectors.toList());
-        }
+        addressList.forEach(address -> {
+            PERSON_LIST.stream().filter(p -> p.getAddress().equalsIgnoreCase(address)).forEach(person -> {
+                phoneList.add(person.getPhone());
+            });
+        });
         return phoneList;
+    }
+
+    @Override
+    public List<Person> findPersonByFirstAndLastName(String firstName, String lastName) {
+        List<Person> personList = new ArrayList<>();
+        PERSON_LIST.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName)).forEach(personList::add);
+        return personList;
     }
 }

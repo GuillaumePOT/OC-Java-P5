@@ -1,6 +1,7 @@
 package com.gpot.fr.safetynet.repository.imp;
 
 import com.gpot.fr.safetynet.entity.MedicalRecords;
+import com.gpot.fr.safetynet.entity.Person;
 import com.gpot.fr.safetynet.repository.MedicalRecordsRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,15 @@ public class MedicalRecordsRepositoryImp extends DataRepository implements Medic
     public void delete(String firstName, String lastName) {
         MEDICAL_RECORDS_LIST.remove(MEDICAL_RECORDS_LIST.stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
                 .findFirst().orElse(null));
+    }
+    @Override
+    public List<MedicalRecords> findRecordsByPersonList(List<Person> personList) {
+        List<MedicalRecords> recordList = new ArrayList<>();
+        personList.forEach(person -> {
+            MEDICAL_RECORDS_LIST.stream().filter(p -> p.getFirstName().equalsIgnoreCase(person.getFirstName()) && p.getLastName().equalsIgnoreCase(person.getLastName()))
+                    .forEach(recordList::add);
+        });
+        return recordList;
     }
     @Override
     public List<MedicalRecords> findAll() {

@@ -1,8 +1,12 @@
 package com.gpot.fr.safetynet.controller;
 
 import com.gpot.fr.safetynet.assembler.AlertAssembler;
+import com.gpot.fr.safetynet.entity.MedicalRecords;
 import com.gpot.fr.safetynet.entity.Person;
 import com.gpot.fr.safetynet.model.FireStationNumberModel;
+import com.gpot.fr.safetynet.model.HomeByStationListModel;
+import com.gpot.fr.safetynet.model.InhabitantByAddressModel;
+import com.gpot.fr.safetynet.model.PersonInfoModel;
 import com.gpot.fr.safetynet.service.FireStationService;
 import com.gpot.fr.safetynet.service.MedicalRecordsService;
 import com.gpot.fr.safetynet.service.PersonService;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,8 +31,16 @@ public class AlertController {
     @GetMapping("/firestation")
     public ResponseEntity<List<FireStationNumberModel>> findPersonsCoveredByStation(@RequestParam(name = "stationNumber") String stationNumber) {
         List<String> addressList = fireStationService.findAddressByStationNumber(stationNumber);
-        List<Person> personList = personService.findPersonByAddress(addressList);
-        return new ResponseEntity<>(alertAssembler.toModelFindPersonsCoveredByStation(personList), HttpStatus.OK);
+        List<Person> personList = personService.findPersonByAddressList(addressList);
+        List<FireStationNumberModel> assembledList = alertAssembler.toModelFindPersonsCoveredByStation(personList);
+        return new ResponseEntity<>(assembledList, HttpStatus.OK);
+    }
+    @GetMapping("/childAlert")
+    public ResponseEntity<> findChildByAddress(@RequestParam (name = "address") String address){
+        List<Person> personList = personService.findPersonByAddress(address);
+        List<MedicalRecords> recordsList = medicalRecordsService.findRecordsByPersonList(personList);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/phoneAlert")
@@ -36,15 +49,40 @@ public class AlertController {
         List<String> phoneList = personService.findPhoneByStation(addressList);
         return new ResponseEntity<>(phoneList, HttpStatus.OK);
     }
+    @GetMapping("/fire")
+    public ResponseEntity<List<InhabitantByAddressModel>> findInhabitantByAddress(@RequestParam (name = "address")String address){
+        String stationNumber = fireStationService.findStationNumberByAddress(address);
+        List<Person> personList = personService.findPersonByAddress(address);
+        List<MedicalRecords> recordsList = medicalRecordsService.findRecordsByPersonList(personList);
+        List<InhabitantByAddressModel> inhabitantList = alertAssembler.toModelInhabitantByAddress(personList,recordsList);
+        return   new ResponseEntity<>(inhabitantList,HttpStatus.OK);
+    }
 
-/*    @GetMapping("/flood/station")
-    public ResponseEntity<> findHomeByStationList(@RequestParam (name = "station")List<String> stationList){
+    @GetMapping("/flood/stations")
+    public ResponseEntity<List<HomeByStationListModel>> findHomeByStationList(@RequestParam(name = "stations") List<String> stationList) {
         List<String> addressList = new ArrayList<>();
-        for(String stationNumber:stationList){
+        for (String stationNumber : stationList) {
             addressList.addAll(fireStationService.findAddressByStationNumber(stationNumber));
         }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<Person> personList = personService.findPersonByAddressList(addressList);
+        List<MedicalRecords> recordsList = medicalRecordsService.findRecordsByPersonList(personList);
+        List<HomeByStationListModel> assembledHomeList = alertAssembler.toModelFindHomeByStationList(addressList,personList,recordsList);
+        return new ResponseEntity<>(assembledHomeList, HttpStatus.OK);
     }
+    @GetMapping("/personInfo")
+    public ResponseEntity<List<PersonInfoModel>> findPersonInfoByName(@RequestParam (name = "firstName") String firstName, @RequestParam (name = "lastName")String lastName){
+        List<Person> personList = personService.findPersonsByFirstAndLastName(firstName,lastName);
+        List<MedicalRecords> reccordList = medicalRecordsService.findRecordsByPersonList(personList);
+        List<PersonInfoModel> assembledPersonInfo = alertAssembler.toModelPersonInfo(personList,reccordList);
+        return new ResponseEntity<>(assembledPersonInfo,HttpStatus.OK);
+    }
+    @GetMapping("/communityEmail")
+    public ResponseEntity<List<String>> findEmailByCity(@RequestParam(name = "city") String city) {
+        List<String> emailList = personService.findEmailByCity(city);
+        return new ResponseEntity<>(emailList, HttpStatus.OK);
+    }
+
+    /*DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
+    DateTime dateTime = DateTime.parse(dateInString, formatter);
 */
 }

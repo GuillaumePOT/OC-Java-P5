@@ -9,8 +9,11 @@ public interface PersonRepository {
     Person update(Person person);
     List<String> findEmailByCity(String city);
 
-    List<Person> findPersonByAddress(List<String> addressList);
+    List<Person> findPersonByAddressList(List<String> addressList);
+    List<Person> findPersonByAddress(String address);
 
     List<String> findPhoneByStation(List<String> addressList);
+
+    List<Person> findPersonByFirstAndLastName(String firstName, String lastName);
 }
 

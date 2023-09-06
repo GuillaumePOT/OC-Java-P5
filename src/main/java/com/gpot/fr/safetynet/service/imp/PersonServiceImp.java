@@ -3,7 +3,6 @@ package com.gpot.fr.safetynet.service.imp;
 import com.gpot.fr.safetynet.dto.PersonDto;
 import com.gpot.fr.safetynet.entity.Person;
 import com.gpot.fr.safetynet.repository.PersonRepository;
-import com.gpot.fr.safetynet.repository.imp.PersonRepositoryImp;
 import com.gpot.fr.safetynet.service.PersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,12 +55,22 @@ public class PersonServiceImp implements PersonService {
     }
 
     @Override
-    public List<Person> findPersonByAddress(List<String> addressList) {
-        return personRepository.findPersonByAddress(addressList);
+    public List<Person> findPersonByAddressList(List<String> addressList) {
+        return personRepository.findPersonByAddressList(addressList);
+    }
+
+    @Override
+    public List<Person> findPersonByAddress(String address) {
+        return personRepository.findPersonByAddress(address);
     }
 
     @Override
     public List<String> findPhoneByStation(List<String> addressList) {
         return personRepository.findPhoneByStation(addressList);
+    }
+
+    @Override
+    public List<Person> findPersonsByFirstAndLastName(String firstName, String lastName) {
+        return personRepository.findPersonByFirstAndLastName(firstName,lastName);
     }
 }

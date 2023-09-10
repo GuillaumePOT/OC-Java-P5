@@ -1,18 +1,17 @@
 package com.gpot.fr.safetynet.model;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FireStationNumberModel {
+public class StationNumberAndAssembledList {
 
-  private String firstName;
-  private String lastName;
-  private String address;
-  private String phone;
+  private String stationNumber;
+  private List<InhabitantByAddressModel> inhabitantList;
 }

@@ -9,6 +9,7 @@ import com.gpot.fr.safetynet.model.*;
 import com.gpot.fr.safetynet.service.FireStationService;
 import com.gpot.fr.safetynet.service.MedicalRecordsService;
 import com.gpot.fr.safetynet.service.PersonService;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import lombok.AllArgsConstructor;

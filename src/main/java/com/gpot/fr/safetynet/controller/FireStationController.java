@@ -11,9 +11,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-class FireStationController {
+public class FireStationController {
 
   private final FireStationService fireStationService;
+
+  /*  @GetMapping("/firestation")
+  public ResponseEntity<List<FireStation>> findAll() {
+    final var fireStation = fireStationService.findAll();
+    return new ResponseEntity<>(fireStation, HttpStatus.OK);
+  }*/
 
   @PostMapping("/firestation")
   public ResponseEntity<FireStation> add(@RequestBody final FirestationDto dto) {

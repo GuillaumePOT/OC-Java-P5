@@ -1,5 +1,7 @@
 package com.gpot.fr.safetynet.controller;
 
+import static com.gpot.fr.safetynet.utils.AppUtils.*;
+
 import com.gpot.fr.safetynet.assembler.AlertAssembler;
 import com.gpot.fr.safetynet.entity.MedicalRecords;
 import com.gpot.fr.safetynet.entity.Person;
@@ -7,15 +9,9 @@ import com.gpot.fr.safetynet.model.*;
 import com.gpot.fr.safetynet.service.FireStationService;
 import com.gpot.fr.safetynet.service.MedicalRecordsService;
 import com.gpot.fr.safetynet.service.PersonService;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
-import org.apache.logging.log4j.util.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,23 +31,21 @@ public class AlertController {
   public ResponseEntity<CountAndAssembledList> findPersonsCoveredByStation(
     @RequestParam(name = "stationNumber") String stationNumber
   ) {
-    int minorCount = 0;
-    int majorCount = 0;
     List<String> addressList = fireStationService.findAddressByStationNumber(stationNumber);
     List<Person> personList = personService.findPersonByAddressList(addressList);
     List<MedicalRecords> recordsList = medicalRecordsService.findRecordsByPersonList(personList);
     List<FireStationNumberModel> assembledList = alertAssembler.toModelFindPersonsCoveredByStation(personList);
     for (MedicalRecords records : recordsList) {
-      if (alertAssembler.isThereMinor(records)) {
-        minorCount++;
+      if (isThereMinor(records)) {
+        setMinorCount(getMajorCount() + 1);
       } else {
-        majorCount++;
+        setMajorCount(getMajorCount() + 1);
       }
     }
-    System.out.println("Minor: " + minorCount + " Major: " + majorCount);
+    System.out.println("Minor: " + getMinorCount() + " Major: " + getMajorCount());
     CountAndAssembledList countAndAssembledList = alertAssembler.toModelCountAndAssembledList(
-      minorCount,
-      majorCount,
+      getMinorCount(),
+      getMajorCount(),
       assembledList
     );
     return new ResponseEntity<>(countAndAssembledList, HttpStatus.OK);
@@ -61,14 +55,9 @@ public class AlertController {
   public ResponseEntity<List<ChildAndFamilyModel>> findChildByAddress(@RequestParam(name = "address") String address) {
     List<Person> personList = personService.findPersonByAddress(address);
     List<MedicalRecords> recordsList = medicalRecordsService.findRecordsByPersonList(personList);
-    List<ChildAndFamilyModel> childList = new ArrayList<>();
-    for (MedicalRecords medicalRecords : recordsList) {
-      if (alertAssembler.isThereMinor(medicalRecords)) {
-        childList = alertAssembler.toModelChildAndFamilyList(personList, recordsList);
-        childList.sort(Comparator.comparing(ChildAndFamilyModel::getAge));
-        break;
-      }
-    }
+    List<ChildAndFamilyModel> childList = alertAssembler.toModelFindChildByAddress(personList, recordsList);
+    childList.sort(Comparator.comparing(ChildAndFamilyModel::getAge));
+    System.out.println(childList);
     return new ResponseEntity<>(childList, HttpStatus.OK);
   }
 

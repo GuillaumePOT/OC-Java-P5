@@ -38,7 +38,7 @@ public class AlertController {
     List<FireStationNumberModel> assembledList = alertAssembler.toModelFindPersonsCoveredByStation(personList);
     for (MedicalRecords records : recordsList) {
       if (isThereMinor(records)) {
-        setMinorCount(getMajorCount() + 1);
+        setMinorCount(getMinorCount() + 1);
       } else {
         setMajorCount(getMajorCount() + 1);
       }

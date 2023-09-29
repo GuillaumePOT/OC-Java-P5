@@ -3,7 +3,6 @@ package com.gpot.fr.safetynet.controller;
 import com.gpot.fr.safetynet.dto.PersonDto;
 import com.gpot.fr.safetynet.entity.Person;
 import com.gpot.fr.safetynet.service.PersonService;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

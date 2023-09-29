@@ -3,7 +3,6 @@ package com.gpot.fr.safetynet.controller;
 import com.gpot.fr.safetynet.dto.FirestationDto;
 import com.gpot.fr.safetynet.entity.FireStation;
 import com.gpot.fr.safetynet.service.FireStationService;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-class FireStationController {
+public class FireStationController {
 
   private final FireStationService fireStationService;
 

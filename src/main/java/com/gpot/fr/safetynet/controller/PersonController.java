@@ -17,7 +17,7 @@ public class PersonController {
   @PostMapping("/person")
   public ResponseEntity<Person> add(@RequestBody final PersonDto dto) {
     final var person = personService.save(dto);
-    return new ResponseEntity<>(person, HttpStatus.OK);
+    return new ResponseEntity<>(person, HttpStatus.CREATED);
   }
 
   @DeleteMapping("/person/{lastName}/{firstName}")
@@ -26,7 +26,7 @@ public class PersonController {
     @PathVariable(name = "lastName") String lastName
   ) {
     personService.delete(firstName, lastName);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @PutMapping("/person")

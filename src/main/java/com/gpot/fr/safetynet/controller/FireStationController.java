@@ -17,13 +17,13 @@ public class FireStationController {
   @PostMapping("/firestation")
   public ResponseEntity<FireStation> add(@RequestBody final FirestationDto dto) {
     final var fireStation = fireStationService.save(dto);
-    return new ResponseEntity<>(fireStation, HttpStatus.OK);
+    return new ResponseEntity<>(fireStation, HttpStatus.CREATED);
   }
 
   @DeleteMapping("/firestation/{address}")
   public ResponseEntity<FireStation> delete(@PathVariable(name = "address") String address) {
     fireStationService.delete(address);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @PutMapping("/firestation")

@@ -8,8 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gpot.fr.safetynet.dto.FirestationDto;
-import com.gpot.fr.safetynet.service.FireStationService;
+import com.gpot.fr.safetynet.dto.MedicalRecordsDto;
+import com.gpot.fr.safetynet.service.MedicalRecordsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,39 +17,39 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(FireStationController.class)
-public class FireStationControllerTest {
+@WebMvcTest(MedicalRecordsController.class)
+public class MedicalRecordsControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
 
   @MockBean
-  private FireStationService fireStationService;
+  private MedicalRecordsService medicalRecordsService;
 
   @Test
-  public void postFireStationTest() throws Exception {
-    FirestationDto testDto = FirestationDto.builder().address("address").station("1").build();
+  public void postMedicalRecordTest() throws Exception {
+    MedicalRecordsDto testDto = MedicalRecordsDto.builder().firstName("FirstName").lastName("LastName").build();
     mockMvc
-      .perform(post("/firestation").content(asJson(testDto)).contentType(MediaType.APPLICATION_JSON_VALUE))
+      .perform(post("/medicalRecord").content(asJson(testDto)).contentType(MediaType.APPLICATION_JSON_VALUE))
       .andDo(print())
       .andExpect(status().isCreated());
-    verify(fireStationService).save(any());
+    verify(medicalRecordsService).save(any());
   }
 
   @Test
-  public void deleteFireStationTest() throws Exception {
-    mockMvc.perform(delete("/firestation/addressToDelete")).andDo(print()).andExpect(status().isNoContent());
-    verify(fireStationService).delete(any());
+  public void deleteMedicalRecordTest() throws Exception {
+    mockMvc.perform(delete("/medicalRecord/lastName/firstName")).andDo(print()).andExpect(status().isNoContent());
+    verify(medicalRecordsService).delete(any(), any());
   }
 
   @Test
-  public void putFireStationTest() throws Exception {
-    FirestationDto testDto = FirestationDto.builder().address("address").station("1").build();
+  public void putMedicalRecordTest() throws Exception {
+    MedicalRecordsDto testDto = MedicalRecordsDto.builder().firstName("FirstName").lastName("LastName").build();
     mockMvc
-      .perform(put("/firestation").content(asJson(testDto)).contentType(MediaType.APPLICATION_JSON_VALUE))
+      .perform(put("/medicalRecord").content(asJson(testDto)).contentType(MediaType.APPLICATION_JSON_VALUE))
       .andDo(print())
       .andExpect(status().isOk());
-    verify(fireStationService).update(any());
+    verify(medicalRecordsService).update(any());
   }
 
   private String asJson(Object object) throws JsonProcessingException {

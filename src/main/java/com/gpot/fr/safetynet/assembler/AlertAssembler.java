@@ -1,11 +1,11 @@
 package com.gpot.fr.safetynet.assembler;
 
+import static com.gpot.fr.safetynet.utils.AppUtils.calculateAge;
+
 import com.gpot.fr.safetynet.entity.MedicalRecords;
 import com.gpot.fr.safetynet.entity.Person;
 import com.gpot.fr.safetynet.model.*;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
+import com.gpot.fr.safetynet.utils.AppUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -32,7 +32,7 @@ public class AlertAssembler {
     List<MedicalRecords> recordsList
   ) {
     final var inhabitantList = new ArrayList<InhabitantByAddressModel>();
-    personList.forEach(person -> {
+    personList.forEach(person ->
       recordsList
         .stream()
         .filter(f ->
@@ -40,10 +40,8 @@ public class AlertAssembler {
           f.getLastName().equalsIgnoreCase(person.getLastName())
         )
         .findFirst()
-        .ifPresent(recordFound -> {
-          inhabitantList.add(this.toModelInhabitantByAddress(person, recordFound));
-        });
-    });
+        .ifPresent(recordFound -> inhabitantList.add(this.toModelInhabitantByAddress(person, recordFound)))
+    );
     return inhabitantList;
   }
 
@@ -70,15 +68,13 @@ public class AlertAssembler {
         .stream()
         .filter(person -> person.getAddress().equalsIgnoreCase(address))
         .toList();
-      listOfPerson.forEach(person -> {
+      listOfPerson.forEach(person ->
         medicalRecords
           .stream()
           .filter(m -> m.getFirstName().equalsIgnoreCase(person.getFirstName()))
           .findFirst()
-          .ifPresent(m -> {
-            homeList.add(this.toModelFindHomeByStationList(person, m));
-          });
-      });
+          .ifPresent(m -> homeList.add(this.toModelFindHomeByStationList(person, m)))
+      );
     });
     return homeList;
   }
@@ -98,11 +94,7 @@ public class AlertAssembler {
 
   public List<PersonInfoModel> toModelPersonInfo(List<Person> personList, List<MedicalRecords> reccordList) {
     final var infoList = new ArrayList<PersonInfoModel>();
-    personList.forEach(person -> {
-      reccordList.forEach(record -> {
-        infoList.add(this.toModelPersonInfo(person, record));
-      });
-    });
+    personList.forEach(person -> reccordList.forEach(record -> infoList.add(this.toModelPersonInfo(person, record))));
     return infoList;
   }
 
@@ -124,15 +116,13 @@ public class AlertAssembler {
     List<MedicalRecords> recordsList
   ) {
     final var childAndFamilyList = new ArrayList<ChildAndFamilyModel>();
-    personList.forEach(person -> {
+    personList.forEach(person ->
       recordsList
         .stream()
         .filter(m -> m.getFirstName().equalsIgnoreCase(person.getFirstName()))
         .findFirst()
-        .ifPresent(m -> {
-          childAndFamilyList.add(this.toModelChildAndFamilyList(person, m));
-        });
-    });
+        .ifPresent(m -> childAndFamilyList.add(this.toModelChildAndFamilyList(person, m)))
+    );
     return childAndFamilyList;
   }
 
@@ -165,14 +155,15 @@ public class AlertAssembler {
     return StationNumberAndAssembledList.builder().stationNumber(stationNumber).inhabitantList(inhabitantList).build();
   }
 
-  public boolean isThereMinor(MedicalRecords records) {
-    return calculateAge(records) <= 18;
-  }
-
-  public int calculateAge(MedicalRecords records) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-    LocalDate localDate = LocalDate.parse(records.getBirthdate(), formatter);
-    Period age = Period.between(localDate, LocalDate.now());
-    return age.getYears();
+  public List<ChildAndFamilyModel> toModelFindChildByAddress(
+    List<Person> personList,
+    List<MedicalRecords> recordsList
+  ) {
+    return recordsList
+      .stream()
+      .filter(AppUtils::isThereMinor)
+      .findAny()
+      .map(records -> toModelChildAndFamilyList(personList, recordsList))
+      .orElse(new ArrayList<>());
   }
 }

@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-@Builder
 @AllArgsConstructor
+@Builder
 public class FirestationDto {
 
   private String address;

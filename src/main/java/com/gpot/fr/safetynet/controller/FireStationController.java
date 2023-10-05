@@ -14,6 +14,12 @@ public class FireStationController {
 
   private final FireStationService fireStationService;
 
+  /*  @GetMapping("/firestation")
+  public ResponseEntity<List<FireStation>> findAll() {
+    final var fireStation = fireStationService.findAll();
+    return new ResponseEntity<>(fireStation, HttpStatus.OK);
+  }*/
+
   @PostMapping("/firestation")
   public ResponseEntity<FireStation> add(@RequestBody final FirestationDto dto) {
     final var fireStation = fireStationService.save(dto);

@@ -32,7 +32,7 @@ public class PersonControllerTest {
     mockMvc
       .perform(post("/person").content(asJson(testDto)).contentType(MediaType.APPLICATION_JSON_VALUE))
       .andDo(print())
-      .andExpect(status().isOk());
+      .andExpect(status().isCreated());
     verify(personService).save(any());
   }
 

@@ -14,7 +14,7 @@ public interface PersonService {
   List<Person> findPersonByAddressList(List<String> addressList);
   List<Person> findPersonByAddress(String address);
 
-  List<String> findPhoneByStation(List<String> addressList);
+  List<String> findPhoneByStationList(List<String> addressList);
 
   List<Person> findPersonsByFirstAndLastName(String firstName, String lastName);
 }

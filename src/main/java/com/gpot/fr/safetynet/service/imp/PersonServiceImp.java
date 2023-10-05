@@ -71,7 +71,7 @@ public class PersonServiceImp implements PersonService {
   }
 
   @Override
-  public List<String> findPhoneByStation(List<String> addressList) {
+  public List<String> findPhoneByStationList(List<String> addressList) {
     return personRepository.findPhoneByStation(addressList);
   }
 

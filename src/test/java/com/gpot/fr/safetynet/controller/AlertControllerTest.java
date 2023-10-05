@@ -71,13 +71,16 @@ public class AlertControllerTest {
     verify(alertAssembler).toModelStationNumberAndAssembledList(any(), anyList());
   }
 
-  /* @Test
+  @Test
   public void findHomeByStationListTest() throws Exception {
-    mockMvc.perform(get("/flood/stations").params()).andDo(print()).andExpect(status().isOk());
+    mockMvc
+      .perform(get("/flood/stations").param("stations", "").param("stations", "1"))
+      .andDo(print())
+      .andExpect(status().isOk());
     verify(personService).findPersonByAddressList(anyList());
     verify(medicalRecordsService).findRecordsByPersonList(anyList());
     verify(alertAssembler).toModelFindHomeByStationList(anyList(), anyList(), anyList());
-  }*/
+  }
 
   @Test
   public void findPersonInfoByNameTest() throws Exception {

@@ -2,10 +2,12 @@ package com.gpot.fr.safetynet.service.imp;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.verify;
 
 import com.gpot.fr.safetynet.dto.PersonDto;
 import com.gpot.fr.safetynet.repository.PersonRepository;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class PersonServiceImpTest {
+public class PersonServiceImpTest {
 
   @InjectMocks
   private PersonServiceImp service;
@@ -28,26 +30,50 @@ class PersonServiceImpTest {
   }
 
   @Test
-  void itShouldDelete() {}
+  void itShouldDelete() {
+    assertDoesNotThrow(() -> service.delete("firstName", "lastName"));
+    verify(repository).delete(any(), any());
+  }
 
   @Test
-  void itShouldFindAll() {}
+  void itShouldFindAll() {
+    assertDoesNotThrow(() -> service.findAll());
+    verify(repository).findAll();
+  }
 
   @Test
-  void itShouldUpdate() {}
+  void itShouldUpdate() {
+    assertDoesNotThrow(() -> service.update(PersonDto.builder().build()));
+    verify(repository).update(any());
+  }
 
   @Test
-  void itShouldFindEmailByCity() {}
+  void itShouldFindEmailByCity() {
+    assertDoesNotThrow(() -> service.findEmailByCity("city"));
+    verify(repository).findEmailByCity(any());
+  }
 
   @Test
-  void itShouldFindPersonByAddressList() {}
+  void itShouldFindPersonByAddressList() {
+    assertDoesNotThrow(() -> service.findPersonByAddressList(Collections.singletonList("address")));
+    verify(repository).findPersonByAddressList(anyList());
+  }
 
   @Test
-  void findPersonByAddress() {}
+  void findPersonByAddress() {
+    assertDoesNotThrow(() -> service.findPersonByAddress("address"));
+    verify(repository).findPersonByAddress(any());
+  }
 
   @Test
-  void findPhoneByStationList() {}
+  void findPhoneByStationList() {
+    assertDoesNotThrow(() -> service.findPhoneByStationList(Collections.singletonList("address")));
+    verify(repository).findPhoneByStation(anyList());
+  }
 
   @Test
-  void findPersonsByFirstAndLastName() {}
+  void findPersonsByFirstAndLastName() {
+    assertDoesNotThrow(() -> service.findPersonsByFirstAndLastName("firstName", "lastName"));
+    verify(repository).findPersonByFirstAndLastName(any(), any());
+  }
 }

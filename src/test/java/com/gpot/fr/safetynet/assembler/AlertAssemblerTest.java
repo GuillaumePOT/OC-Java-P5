@@ -5,15 +5,20 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.gpot.fr.safetynet.entity.MedicalRecords;
 import com.gpot.fr.safetynet.entity.Person;
 import com.gpot.fr.safetynet.model.*;
-import java.util.Collections;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class AlertAssemblerTest {
+class AlertAssemblerTest {
 
   private AlertAssembler alertAssembler;
+
+  final DateTimeFormatter pattern = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+  private final String majorDate = LocalDate.now().minusYears(20).format(pattern);
+  private final String minorDate = LocalDate.now().minusYears(16).format(pattern);
 
   @BeforeEach
   public void beforeEach() {
@@ -26,7 +31,7 @@ public class AlertAssemblerTest {
   }
 
   @Test
-  public void itShouldToModelFindPersonsCoveredByStation() {
+  void itShouldToModelFindPersonsCoveredByStation() {
     final var listOfPerson = List.of(
       Person.builder().firstName("firstName").lastName("lastName").address("address").phone("phone").build()
     );
@@ -41,7 +46,7 @@ public class AlertAssemblerTest {
   }
 
   @Test
-  public void itShouldToModelInhabitantByAddress() {
+  void itShouldToModelInhabitantByAddress() {
     final var listOfPerson = List.of(
       Person.builder().firstName("firstName").lastName("lastName").phone("phone").build()
     );
@@ -50,27 +55,27 @@ public class AlertAssemblerTest {
         .builder()
         .firstName("firstName")
         .lastName("lastName")
-        .medications(Collections.singletonList("medication"))
-        .allergies(Collections.singletonList("allergies"))
-        .birthdate("01/01/1999")
+        .medications(List.of("medication"))
+        .allergies(List.of("allergies"))
+        .birthdate(majorDate)
         .build()
     );
     List<InhabitantByAddressModel> result = alertAssembler.toModelInhabitantByAddress(
       listOfPerson,
       listOfMedicalRecords
     );
-    final var model = result.get(0);
     assertFalse(result.isEmpty());
+    final var model = result.get(0);
     assertEquals("firstName", model.getFirstName());
     assertEquals("lastName", model.getLastName());
     assertEquals("phone", model.getPhone());
-    assertEquals(Collections.singletonList("medication"), model.getMedication());
-    assertEquals(Collections.singletonList("allergies"), model.getAllergies());
-    assertEquals(24, model.getAge());
+    assertEquals(List.of("medication"), model.getMedication());
+    assertEquals(List.of("allergies"), model.getAllergies());
+    assertEquals(20, model.getAge());
   }
 
   @Test
-  public void itShouldToModelFindHomeByStationList() {
+  void itShouldToModelFindHomeByStationList() {
     final var addressList = List.of("address");
     final var listOfPerson = List.of(
       Person.builder().firstName("firstName").lastName("lastName").phone("phone").address("address").build()
@@ -80,9 +85,9 @@ public class AlertAssemblerTest {
         .builder()
         .firstName("firstName")
         .lastName("lastName")
-        .medications(Collections.singletonList("medication"))
-        .allergies(Collections.singletonList("allergies"))
-        .birthdate("01/01/1999")
+        .medications(List.of("medication"))
+        .allergies(List.of("allergies"))
+        .birthdate(majorDate)
         .build()
     );
     List<HomeByStationListModel> result = alertAssembler.toModelFindHomeByStationList(
@@ -90,19 +95,19 @@ public class AlertAssemblerTest {
       listOfPerson,
       listOfMedicalRecords
     );
-    final var model = result.get(0);
     assertFalse(result.isEmpty());
+    final var model = result.get(0);
     assertEquals("firstName", model.getFirstName());
     assertEquals("lastName", model.getLastName());
     assertEquals("address", model.getAddress());
     assertEquals("phone", model.getPhone());
-    assertEquals(Collections.singletonList("medication"), model.getMedication());
-    assertEquals(Collections.singletonList("allergies"), model.getAllergies());
-    assertEquals(24, model.getAge());
+    assertEquals(List.of("medication"), model.getMedication());
+    assertEquals(List.of("allergies"), model.getAllergies());
+    assertEquals(20, model.getAge());
   }
 
   @Test
-  public void itShouldToModelPersonInfo() {
+  void itShouldToModelPersonInfo() {
     final var listOfPerson = List.of(
       Person.builder().firstName("firstName").lastName("lastName").email("email").address("address").build()
     );
@@ -111,39 +116,39 @@ public class AlertAssemblerTest {
         .builder()
         .firstName("firstName")
         .lastName("lastName")
-        .medications(Collections.singletonList("medication"))
-        .allergies(Collections.singletonList("allergies"))
-        .birthdate("01/01/1999")
+        .medications(List.of("medication"))
+        .allergies(List.of("allergies"))
+        .birthdate(majorDate)
         .build()
     );
     List<PersonInfoModel> result = alertAssembler.toModelPersonInfo(listOfPerson, listOfMedicalRecords);
-    final var model = result.get(0);
     assertFalse(result.isEmpty());
+    final var model = result.get(0);
     assertEquals("firstName", model.getFirstName());
     assertEquals("lastName", model.getLastName());
     assertEquals("address", model.getAddress());
     assertEquals("email", model.getEmail());
-    assertEquals(Collections.singletonList("medication"), model.getMedication());
-    assertEquals(Collections.singletonList("allergies"), model.getAllergies());
-    assertEquals(24, model.getAge());
+    assertEquals(List.of("medication"), model.getMedication());
+    assertEquals(List.of("allergies"), model.getAllergies());
+    assertEquals(20, model.getAge());
   }
 
   @Test
-  public void itShouldToModelChildAndFamilyList() {
+  void itShouldToModelChildAndFamilyList() {
     final var listOfPerson = List.of(Person.builder().firstName("firstName").lastName("lastName").build());
     final var listOfMedicalRecords = List.of(
-      MedicalRecords.builder().firstName("firstName").lastName("lastName").birthdate("01/01/1999").build()
+      MedicalRecords.builder().firstName("firstName").lastName("lastName").birthdate(majorDate).build()
     );
     List<ChildAndFamilyModel> result = alertAssembler.toModelChildAndFamilyList(listOfPerson, listOfMedicalRecords);
-    final var model = result.get(0);
     assertFalse(result.isEmpty());
+    final var model = result.get(0);
     assertEquals("firstName", model.getFirstName());
     assertEquals("lastName", model.getLastName());
-    assertEquals(24, model.getAge());
+    assertEquals(20, model.getAge());
   }
 
   @Test
-  public void itShouldToModelCountAndAssembledList() {
+  void itShouldToModelCountAndAssembledList() {
     final var minorCount = 0;
     final var majorCount = 1;
     final var assembledList = List.of(
@@ -167,7 +172,7 @@ public class AlertAssemblerTest {
   }
 
   @Test
-  public void itShouldToModelStationNumberAndAssembledList() {
+  void itShouldToModelStationNumberAndAssembledList() {
     final var stationNumber = "1";
     final var inhabitantList = List.of(
       InhabitantByAddressModel
@@ -175,9 +180,9 @@ public class AlertAssemblerTest {
         .firstName("firstName")
         .lastName("lastName")
         .phone("phone")
-        .age(23)
-        .medication(Collections.singletonList("medication"))
-        .allergies(Collections.singletonList("allergies"))
+        .age(20)
+        .medication(List.of("medication"))
+        .allergies(List.of("allergies"))
         .build()
     );
     StationNumberAndAssembledList result = alertAssembler.toModelStationNumberAndAssembledList(
@@ -189,23 +194,23 @@ public class AlertAssemblerTest {
     assertEquals("firstName", model.getFirstName());
     assertEquals("lastName", model.getLastName());
     assertEquals("phone", model.getPhone());
-    assertEquals(23, model.getAge());
-    assertEquals(Collections.singletonList("medication"), model.getMedication());
-    assertEquals(Collections.singletonList("allergies"), model.getAllergies());
+    assertEquals(20, model.getAge());
+    assertEquals(List.of("medication"), model.getMedication());
+    assertEquals(List.of("allergies"), model.getAllergies());
   }
 
   @Test
-  public void itShouldToModelFindChildByAddress() {
+  void itShouldToModelFindChildByAddress() {
     final var listOfPerson = List.of(Person.builder().firstName("firstName").lastName("lastName").build());
     final var listOfMedicalRecords = List.of(
-      MedicalRecords.builder().firstName("firstName").lastName("lastName").birthdate("01/01/2010").build()
+      MedicalRecords.builder().firstName("firstName").lastName("lastName").birthdate(minorDate).build()
     );
     List<ChildAndFamilyModel> result = alertAssembler.toModelFindChildByAddress(listOfPerson, listOfMedicalRecords);
     assertFalse(result.isEmpty());
   }
 
   @Test
-  public void itShouldToModelFindChildByAddressWithoutMinor() {
+  void itShouldToModelFindChildByAddressWithoutMinor() {
     final var listOfPerson = List.of(Person.builder().firstName("firstName").lastName("lastName").build());
     final var listOfMedicalRecords = List.of(
       MedicalRecords.builder().firstName("firstName").lastName("lastName").birthdate("01/01/1999").build()

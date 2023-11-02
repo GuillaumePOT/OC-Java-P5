@@ -32,15 +32,15 @@ public class MedicalRecordsRepositoryImp extends DataRepository implements Medic
   @Override
   public List<MedicalRecords> findRecordsByPersonList(List<Person> personList) {
     List<MedicalRecords> recordList = new ArrayList<>();
-    personList.forEach(person -> {
+    personList.forEach(person ->
       MEDICAL_RECORDS_LIST
         .stream()
         .filter(p ->
           p.getFirstName().equalsIgnoreCase(person.getFirstName()) &&
           p.getLastName().equalsIgnoreCase(person.getLastName())
         )
-        .forEach(recordList::add);
-    });
+        .forEach(recordList::add)
+    );
     return recordList;
   }
 

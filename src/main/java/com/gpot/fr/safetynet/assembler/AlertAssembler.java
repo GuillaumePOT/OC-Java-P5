@@ -94,7 +94,9 @@ public class AlertAssembler {
 
   public List<PersonInfoModel> toModelPersonInfo(List<Person> personList, List<MedicalRecords> reccordList) {
     final var infoList = new ArrayList<PersonInfoModel>();
-    personList.forEach(person -> reccordList.forEach(record -> infoList.add(this.toModelPersonInfo(person, record))));
+    personList.forEach(person ->
+      reccordList.forEach(medicalRecord -> infoList.add(this.toModelPersonInfo(person, medicalRecord)))
+    );
     return infoList;
   }
 

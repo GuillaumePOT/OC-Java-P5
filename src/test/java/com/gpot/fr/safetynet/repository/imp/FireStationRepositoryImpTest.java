@@ -4,35 +4,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.gpot.fr.safetynet.entity.FireStation;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class FireStationRepositoryImpTest {
 
   private FireStationRepositoryImp repository;
-  private static final List<FireStation> initial = new ArrayList<>();
-
-  @BeforeAll
-  public static void beforeAll() throws IOException {
-    DataRepository.init();
-    initial.addAll(FireStationRepositoryImp.FIRE_STATION_LIST);
-  }
 
   @BeforeEach
-  public void beforeEach() {
+  void beforeEach() throws IOException {
     repository = new FireStationRepositoryImp();
-    FireStationRepositoryImp.FIRE_STATION_LIST.clear();
-    FireStationRepositoryImp.FIRE_STATION_LIST.addAll(initial);
+
+    DataRepository.init();
     assertEquals(13, FireStationRepositoryImp.FIRE_STATION_LIST.size());
   }
 
   @AfterEach
   public void afterEach() {
-    FireStationRepositoryImp.FIRE_STATION_LIST.clear();
     repository = null;
   }
 

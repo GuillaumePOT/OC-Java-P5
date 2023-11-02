@@ -45,7 +45,6 @@ public class AlertController {
         setMajorCount(getMajorCount() + 1);
       }
     }
-    System.out.println("Minor: " + getMinorCount() + " Major: " + getMajorCount());
     CountAndAssembledList countAndAssembledList = alertAssembler.toModelCountAndAssembledList(
       getMinorCount(),
       getMajorCount(),
@@ -60,7 +59,6 @@ public class AlertController {
     List<MedicalRecords> recordsList = medicalRecordsService.findRecordsByPersonList(personList);
     List<ChildAndFamilyModel> childList = alertAssembler.toModelFindChildByAddress(personList, recordsList);
     childList.sort(Comparator.comparing(ChildAndFamilyModel::getAge));
-    System.out.println(childList);
     return new ResponseEntity<>(childList, HttpStatus.OK);
   }
 

@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verify;
 import com.gpot.fr.safetynet.dto.MedicalRecordsDto;
 import com.gpot.fr.safetynet.entity.Person;
 import com.gpot.fr.safetynet.repository.MedicalRecordsRepository;
-import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -50,7 +50,7 @@ public class MedicalRecordsServiceImpTest {
 
   @Test
   void itShouldFindRecordsByPersonList() {
-    assertDoesNotThrow(() -> service.findRecordsByPersonList(Collections.singletonList((Person.builder().build()))));
+    assertDoesNotThrow(() -> service.findRecordsByPersonList(List.of((Person.builder().build()))));
     verify(repository).findRecordsByPersonList(anyList());
   }
 }

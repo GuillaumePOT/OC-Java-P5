@@ -4,7 +4,6 @@ import com.gpot.fr.safetynet.entity.FireStation;
 import com.gpot.fr.safetynet.repository.FireStationRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -36,7 +35,7 @@ class FireStationRepositoryImp extends DataRepository implements FireStationRepo
       .stream()
       .filter(p -> p.getStation().equalsIgnoreCase(stationNumber))
       .map(FireStation::getAddress)
-      .collect(Collectors.toList());
+      .toList();
   }
 
   @Override
@@ -55,9 +54,7 @@ class FireStationRepositoryImp extends DataRepository implements FireStationRepo
       .stream()
       .filter(p -> p.getAddress().equalsIgnoreCase(fireStation.getAddress()))
       .findFirst()
-      .ifPresent(stationFound -> {
-        stationFound.setStation(fireStation.getStation());
-      });
+      .ifPresent(stationFound -> stationFound.setStation(fireStation.getStation()));
     return fireStation;
   }
 }

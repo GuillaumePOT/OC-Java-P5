@@ -6,34 +6,26 @@ import com.gpot.fr.safetynet.entity.MedicalRecords;
 import com.gpot.fr.safetynet.entity.Person;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class MedicalRecordsRepositoryImpTest {
+class MedicalRecordsRepositoryImpTest {
 
   private MedicalRecordsRepositoryImp repository;
   private static final List<MedicalRecords> initial = new ArrayList<>();
 
-  @BeforeAll
-  public static void beforeAll() throws IOException {
-    DataRepository.init();
-    initial.addAll(MedicalRecordsRepositoryImp.MEDICAL_RECORDS_LIST);
-  }
-
   @BeforeEach
-  public void beforeEach() {
+  public void beforeEach() throws IOException {
     repository = new MedicalRecordsRepositoryImp();
-    MedicalRecordsRepositoryImp.MEDICAL_RECORDS_LIST.clear();
-    MedicalRecordsRepositoryImp.MEDICAL_RECORDS_LIST.addAll(initial);
+
+    DataRepository.init();
     assertEquals(23, MedicalRecordsRepositoryImp.MEDICAL_RECORDS_LIST.size());
   }
 
   @AfterEach
-  public void afterEach() {
+  void afterEach() {
     MedicalRecordsRepositoryImp.MEDICAL_RECORDS_LIST.clear();
     repository = null;
   }
@@ -69,12 +61,9 @@ public class MedicalRecordsRepositoryImpTest {
       .builder()
       .firstName("John")
       .lastName("Boyd")
-      .medications(Collections.singletonList("newMedication"))
+      .medications(List.of("newMedication"))
       .build();
     repository.update(medicalRecordsUpdated);
-    assertEquals(
-      Collections.singletonList("newMedication"),
-      MedicalRecordsRepositoryImp.MEDICAL_RECORDS_LIST.get(0).getMedications()
-    );
+    assertEquals(List.of("newMedication"), MedicalRecordsRepositoryImp.MEDICAL_RECORDS_LIST.get(0).getMedications());
   }
 }

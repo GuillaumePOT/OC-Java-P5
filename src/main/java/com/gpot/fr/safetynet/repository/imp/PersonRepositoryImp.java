@@ -4,7 +4,6 @@ import com.gpot.fr.safetynet.entity.Person;
 import com.gpot.fr.safetynet.repository.PersonRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -55,11 +54,7 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
 
   @Override
   public List<String> findEmailByCity(String city) {
-    return PERSON_LIST
-      .stream()
-      .filter(p -> p.getCity().equalsIgnoreCase(city))
-      .map(Person::getEmail)
-      .collect(Collectors.toList());
+    return PERSON_LIST.stream().filter(p -> p.getCity().equalsIgnoreCase(city)).map(Person::getEmail).toList();
   }
 
   @Override
@@ -81,14 +76,12 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
   @Override
   public List<String> findPhoneByStation(List<String> addressList) {
     List<String> phoneList = new ArrayList<>();
-    addressList.forEach(address -> {
+    addressList.forEach(address ->
       PERSON_LIST
         .stream()
         .filter(p -> p.getAddress().equalsIgnoreCase(address))
-        .forEach(person -> {
-          phoneList.add(person.getPhone());
-        });
-    });
+        .forEach(person -> phoneList.add(person.getPhone()))
+    );
     return phoneList;
   }
 

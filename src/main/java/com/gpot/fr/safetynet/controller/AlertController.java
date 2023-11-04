@@ -37,10 +37,11 @@ public class AlertController {
     List<String> addressList = fireStationService.findAddressByStationNumber(stationNumber);
     List<Person> personList = personService.findPersonByAddressList(addressList);
     List<MedicalRecords> recordsList = medicalRecordsService.findRecordsByPersonList(personList);
-    List<FireStationNumberModel> assembledList = alertAssembler.toModelFindPersonsCoveredByStation(personList);
+    List<CountAndAssembledList.FireStationNumberModel> assembledList =
+      alertAssembler.toModelFindPersonsCoveredByStation(personList);
     for (MedicalRecords records : recordsList) {
       if (isThereMinor(records)) {
-        setMinorCount(getMajorCount() + 1);
+        setMinorCount(getMinorCount() + 1);
       } else {
         setMajorCount(getMajorCount() + 1);
       }

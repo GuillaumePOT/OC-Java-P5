@@ -1,5 +1,6 @@
 package com.gpot.fr.safetynet.controller;
 
+import static com.gpot.fr.safetynet.utils.AppUtils.asJson;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -18,7 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(FireStationController.class)
-public class FireStationControllerTest {
+class FireStationControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -27,7 +28,7 @@ public class FireStationControllerTest {
   private FireStationService fireStationService;
 
   @Test
-  public void postFireStationTest() throws Exception {
+  void postFireStationTest() throws Exception {
     FirestationDto testDto = FirestationDto.builder().address("address").station("1").build();
     mockMvc
       .perform(post("/firestation").content(asJson(testDto)).contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -37,23 +38,18 @@ public class FireStationControllerTest {
   }
 
   @Test
-  public void deleteFireStationTest() throws Exception {
+  void deleteFireStationTest() throws Exception {
     mockMvc.perform(delete("/firestation/addressToDelete")).andDo(print()).andExpect(status().isNoContent());
     verify(fireStationService).delete(any());
   }
 
   @Test
-  public void putFireStationTest() throws Exception {
+  void putFireStationTest() throws Exception {
     FirestationDto testDto = FirestationDto.builder().address("address").station("1").build();
     mockMvc
       .perform(put("/firestation").content(asJson(testDto)).contentType(MediaType.APPLICATION_JSON_VALUE))
       .andDo(print())
       .andExpect(status().isOk());
     verify(fireStationService).update(any());
-  }
-
-  private String asJson(Object object) throws JsonProcessingException {
-    final var mapper = new ObjectMapper();
-    return mapper.writeValueAsString(object);
   }
 }

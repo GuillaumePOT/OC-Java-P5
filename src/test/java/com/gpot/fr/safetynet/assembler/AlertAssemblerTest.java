@@ -35,7 +35,9 @@ class AlertAssemblerTest {
     final var listOfPerson = List.of(
       Person.builder().firstName("firstName").lastName("lastName").address("address").phone("phone").build()
     );
-    List<FireStationNumberModel> result = alertAssembler.toModelFindPersonsCoveredByStation(listOfPerson);
+    List<CountAndAssembledList.FireStationNumberModel> result = alertAssembler.toModelFindPersonsCoveredByStation(
+      listOfPerson
+    );
     assertFalse(result.isEmpty());
     assertEquals(1, result.size());
     final var model = result.get(0);
@@ -152,7 +154,7 @@ class AlertAssemblerTest {
     final var minorCount = 0;
     final var majorCount = 1;
     final var assembledList = List.of(
-      FireStationNumberModel
+      CountAndAssembledList.FireStationNumberModel
         .builder()
         .firstName("firstName")
         .lastName("lastName")
@@ -161,7 +163,7 @@ class AlertAssemblerTest {
         .build()
     );
     CountAndAssembledList result = alertAssembler.toModelCountAndAssembledList(minorCount, majorCount, assembledList);
-    final var model = result.getFireStationNumberModelList().get(0);
+    final var model = result.getPersons().get(0);
     assertNotNull(result);
     assertEquals(0, result.getMinorCount());
     assertEquals(1, result.getMajorCount());

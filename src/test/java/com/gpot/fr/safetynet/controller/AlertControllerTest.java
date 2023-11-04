@@ -17,7 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(AlertController.class)
-public class AlertControllerTest {
+class AlertControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -35,7 +35,7 @@ public class AlertControllerTest {
   private AlertAssembler alertAssembler;
 
   @Test
-  public void findPersonCoveredByStationTest() throws Exception {
+  void findPersonCoveredByStationTest() throws Exception {
     mockMvc.perform(get("/firestation").param("stationNumber", anyString())).andDo(print()).andExpect(status().isOk());
     verify(fireStationService).findAddressByStationNumber(anyString());
     verify(personService).findPersonByAddressList(anyList());
@@ -45,7 +45,7 @@ public class AlertControllerTest {
   }
 
   @Test
-  public void findChildByAddressTest() throws Exception {
+  void findChildByAddressTest() throws Exception {
     mockMvc.perform(get("/childAlert").param("address", anyString())).andDo(print()).andExpect(status().isOk());
     verify(personService).findPersonByAddress(anyString());
     verify(medicalRecordsService).findRecordsByPersonList(anyList());
@@ -53,14 +53,14 @@ public class AlertControllerTest {
   }
 
   @Test
-  public void findPhoneByStationTest() throws Exception {
+  void findPhoneByStationTest() throws Exception {
     mockMvc.perform(get("/phoneAlert").param("firestation", anyString())).andDo(print()).andExpect(status().isOk());
     verify(fireStationService).findAddressByStationNumber(anyString());
     verify(personService).findPhoneByStationList(anyList());
   }
 
   @Test
-  public void findInhabitantByAddressTest() throws Exception {
+  void findInhabitantByAddressTest() throws Exception {
     mockMvc.perform(get("/fire").param("address", anyString())).andDo(print()).andExpect(status().isOk());
     verify(fireStationService).findStationNumberByAddress(anyString());
     verify(personService).findPersonByAddress(anyString());
@@ -70,7 +70,7 @@ public class AlertControllerTest {
   }
 
   @Test
-  public void findHomeByStationListTest() throws Exception {
+  void findHomeByStationListTest() throws Exception {
     mockMvc
       .perform(get("/flood/stations").param("stations", "").param("stations", "1"))
       .andDo(print())
@@ -81,7 +81,7 @@ public class AlertControllerTest {
   }
 
   @Test
-  public void findPersonInfoByNameTest() throws Exception {
+  void findPersonInfoByNameTest() throws Exception {
     mockMvc
       .perform(get("/personInfo").param("firstName", anyString()).param("lastName", anyString()))
       .andDo(print())
@@ -92,7 +92,7 @@ public class AlertControllerTest {
   }
 
   @Test
-  public void findEmailByCityTest() throws Exception {
+  void findEmailByCityTest() throws Exception {
     mockMvc.perform(get("/communityEmail").param("city", anyString())).andDo(print()).andExpect(status().isOk());
     verify(personService).findEmailByCity(anyString());
   }

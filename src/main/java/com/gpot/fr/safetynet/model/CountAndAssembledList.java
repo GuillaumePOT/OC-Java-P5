@@ -14,5 +14,17 @@ public class CountAndAssembledList {
 
   private int minorCount;
   private int majorCount;
-  private List<FireStationNumberModel> fireStationNumberModelList;
+  private List<FireStationNumberModel> persons;
+
+  @NoArgsConstructor
+  @Getter
+  @AllArgsConstructor
+  @Builder
+  public static class FireStationNumberModel {
+
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String phone;
+  }
 }

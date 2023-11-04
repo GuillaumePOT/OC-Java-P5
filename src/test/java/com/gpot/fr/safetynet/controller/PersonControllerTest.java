@@ -1,5 +1,6 @@
 package com.gpot.fr.safetynet.controller;
 
+import static com.gpot.fr.safetynet.utils.AppUtils.asJson;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -18,7 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(PersonController.class)
-public class PersonControllerTest {
+class PersonControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -27,7 +28,7 @@ public class PersonControllerTest {
   private PersonService personService;
 
   @Test
-  public void postPersonTest() throws Exception {
+  void postPersonTest() throws Exception {
     PersonDto testDto = PersonDto.builder().firstName("FirstName").lastName("LastName").address("address").build();
     mockMvc
       .perform(post("/person").content(asJson(testDto)).contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -37,23 +38,18 @@ public class PersonControllerTest {
   }
 
   @Test
-  public void deletePersonTest() throws Exception {
+  void deletePersonTest() throws Exception {
     mockMvc.perform(delete("/person/lastName/firstName")).andDo(print()).andExpect(status().isNoContent());
     verify(personService).delete(any(), any());
   }
 
   @Test
-  public void putPersonTest() throws Exception {
+  void putPersonTest() throws Exception {
     PersonDto testDto = PersonDto.builder().firstName("FirstName").lastName("LastName").address("address").build();
     mockMvc
       .perform(put("/person").content(asJson(testDto)).contentType(MediaType.APPLICATION_JSON_VALUE))
       .andDo(print())
       .andExpect(status().isOk());
     verify(personService).update(any());
-  }
-
-  private String asJson(Object object) throws JsonProcessingException {
-    final var mapper = new ObjectMapper();
-    return mapper.writeValueAsString(object);
   }
 }

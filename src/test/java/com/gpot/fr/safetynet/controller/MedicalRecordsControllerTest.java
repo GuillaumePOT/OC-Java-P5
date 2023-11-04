@@ -1,5 +1,6 @@
 package com.gpot.fr.safetynet.controller;
 
+import static com.gpot.fr.safetynet.utils.AppUtils.asJson;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -18,7 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(MedicalRecordsController.class)
-public class MedicalRecordsControllerTest {
+class MedicalRecordsControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -27,7 +28,7 @@ public class MedicalRecordsControllerTest {
   private MedicalRecordsService medicalRecordsService;
 
   @Test
-  public void postMedicalRecordTest() throws Exception {
+  void postMedicalRecordTest() throws Exception {
     MedicalRecordsDto testDto = MedicalRecordsDto.builder().firstName("FirstName").lastName("LastName").build();
     mockMvc
       .perform(post("/medicalRecord").content(asJson(testDto)).contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -37,23 +38,18 @@ public class MedicalRecordsControllerTest {
   }
 
   @Test
-  public void deleteMedicalRecordTest() throws Exception {
+  void deleteMedicalRecordTest() throws Exception {
     mockMvc.perform(delete("/medicalRecord/lastName/firstName")).andDo(print()).andExpect(status().isNoContent());
     verify(medicalRecordsService).delete(any(), any());
   }
 
   @Test
-  public void putMedicalRecordTest() throws Exception {
+  void putMedicalRecordTest() throws Exception {
     MedicalRecordsDto testDto = MedicalRecordsDto.builder().firstName("FirstName").lastName("LastName").build();
     mockMvc
       .perform(put("/medicalRecord").content(asJson(testDto)).contentType(MediaType.APPLICATION_JSON_VALUE))
       .andDo(print())
       .andExpect(status().isOk());
     verify(medicalRecordsService).update(any());
-  }
-
-  private String asJson(Object object) throws JsonProcessingException {
-    final var mapper = new ObjectMapper();
-    return mapper.writeValueAsString(object);
   }
 }

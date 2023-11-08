@@ -13,12 +13,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class AlertAssembler {
 
-  public List<FireStationNumberModel> toModelFindPersonsCoveredByStation(List<Person> personList) {
+  public List<CountAndAssembledList.FireStationNumberModel> toModelFindPersonsCoveredByStation(
+    List<Person> personList
+  ) {
     return personList.stream().map(this::toModelFindPersonsCoveredByStation).toList();
   }
 
-  private FireStationNumberModel toModelFindPersonsCoveredByStation(Person person) {
-    return FireStationNumberModel
+  private CountAndAssembledList.FireStationNumberModel toModelFindPersonsCoveredByStation(Person person) {
+    return CountAndAssembledList.FireStationNumberModel
       .builder()
       .firstName(person.getFirstName())
       .lastName(person.getLastName())
@@ -94,7 +96,9 @@ public class AlertAssembler {
 
   public List<PersonInfoModel> toModelPersonInfo(List<Person> personList, List<MedicalRecords> reccordList) {
     final var infoList = new ArrayList<PersonInfoModel>();
-    personList.forEach(person -> reccordList.forEach(record -> infoList.add(this.toModelPersonInfo(person, record))));
+    personList.forEach(person ->
+      reccordList.forEach(medicalRecord -> infoList.add(this.toModelPersonInfo(person, medicalRecord)))
+    );
     return infoList;
   }
 
@@ -138,14 +142,9 @@ public class AlertAssembler {
   public CountAndAssembledList toModelCountAndAssembledList(
     int minorCount,
     int majorCount,
-    List<FireStationNumberModel> assembledList
+    List<CountAndAssembledList.FireStationNumberModel> assembledList
   ) {
-    return CountAndAssembledList
-      .builder()
-      .majorCount(majorCount)
-      .minorCount(minorCount)
-      .fireStationNumberModelList(assembledList)
-      .build();
+    return CountAndAssembledList.builder().majorCount(majorCount).minorCount(minorCount).persons(assembledList).build();
   }
 
   public StationNumberAndAssembledList toModelStationNumberAndAssembledList(

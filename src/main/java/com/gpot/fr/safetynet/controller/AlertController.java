@@ -32,18 +32,20 @@ public class AlertController {
   public ResponseEntity<CountAndAssembledList> findPersonsCoveredByStation(
     @RequestParam(name = "stationNumber") String stationNumber
   ) {
+    setMajorCount(0);
+    setMinorCount(0);
     List<String> addressList = fireStationService.findAddressByStationNumber(stationNumber);
     List<Person> personList = personService.findPersonByAddressList(addressList);
     List<MedicalRecords> recordsList = medicalRecordsService.findRecordsByPersonList(personList);
-    List<FireStationNumberModel> assembledList = alertAssembler.toModelFindPersonsCoveredByStation(personList);
+    List<CountAndAssembledList.FireStationNumberModel> assembledList =
+      alertAssembler.toModelFindPersonsCoveredByStation(personList);
     for (MedicalRecords records : recordsList) {
       if (isThereMinor(records)) {
-        setMinorCount(getMajorCount() + 1);
+        setMinorCount(getMinorCount() + 1);
       } else {
         setMajorCount(getMajorCount() + 1);
       }
     }
-    System.out.println("Minor: " + getMinorCount() + " Major: " + getMajorCount());
     CountAndAssembledList countAndAssembledList = alertAssembler.toModelCountAndAssembledList(
       getMinorCount(),
       getMajorCount(),
@@ -58,14 +60,13 @@ public class AlertController {
     List<MedicalRecords> recordsList = medicalRecordsService.findRecordsByPersonList(personList);
     List<ChildAndFamilyModel> childList = alertAssembler.toModelFindChildByAddress(personList, recordsList);
     childList.sort(Comparator.comparing(ChildAndFamilyModel::getAge));
-    System.out.println(childList);
     return new ResponseEntity<>(childList, HttpStatus.OK);
   }
 
   @GetMapping("/phoneAlert")
   public ResponseEntity<List<String>> findPhoneByStation(@RequestParam(name = "firestation") String stationNumber) {
     List<String> addressList = fireStationService.findAddressByStationNumber(stationNumber);
-    List<String> phoneList = personService.findPhoneByStation(addressList);
+    List<String> phoneList = personService.findPhoneByStationList(addressList);
     return new ResponseEntity<>(phoneList, HttpStatus.OK);
   }
 

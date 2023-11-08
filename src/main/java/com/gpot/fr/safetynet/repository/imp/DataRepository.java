@@ -11,7 +11,7 @@ import java.io.IOException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class DataRepository {
 
   public static void init() throws IOException {

@@ -68,6 +68,10 @@ class AlertControllerTestIT {
       .andReturn();
     final var result = getMapper()
       .readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ChildAndFamilyModel>>() {});
+    assertEquals(3, result.size());
+    assertEquals("Zach", result.get(0).getFirstName());
+    assertEquals("Zemicks", result.get(0).getLastName());
+    assertEquals(6, result.get(0).getAge());
   }
 
   @Test
@@ -79,6 +83,8 @@ class AlertControllerTestIT {
       .andReturn();
     final var result = getMapper()
       .readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<String>>() {});
+    assertEquals(4, result.size());
+    assertEquals("841-874-9845", result.get(0));
   }
 
   @Test
@@ -102,10 +108,13 @@ class AlertControllerTestIT {
       .andExpect(status().isOk())
       .andReturn();
     final var result = getMapper()
-      .readerForListOf(HomeByStationListModel.class)
-      .readValue(mvcResult.getResponse().getContentAsString());
-    //  .readValue(mvcResult.getResponse().getContentAsString(), HomeByStationListModel.class);
-
+      /*.readerForListOf(HomeByStationListModel.class)
+      .readValue(mvcResult.getResponse().getContentAsString());*/
+      .readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<HomeByStationListModel>>() {});
+    assertEquals(9, result.size());
+    assertEquals("Jonanathan", result.get(0).getFirstName());
+    assertEquals("Marrack", result.get(0).getLastName());
+    assertEquals(34, result.get(0).getAge());
   }
 
   @Test
@@ -115,7 +124,11 @@ class AlertControllerTestIT {
       .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
-    final var result = getMapper().readValue(mvcResult.getResponse().getContentAsString(), PersonInfoModel.class);
+    final var result = getMapper()
+      .readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<PersonInfoModel>>() {});
+    assertEquals("John", result.get(0).getFirstName());
+    assertEquals("Boyd", result.get(0).getLastName());
+    assertEquals("jaboyd@email.com", result.get(0).getEmail());
   }
 
   @Test
@@ -125,6 +138,9 @@ class AlertControllerTestIT {
       .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
-    final var result = getMapper().readValue(mvcResult.getResponse().getContentAsString(), String.class);
+    final var result = getMapper()
+      .readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<String>>() {});
+    assertEquals(23, result.size());
+    assertEquals("jaboyd@email.com", result.get(0));
   }
 }

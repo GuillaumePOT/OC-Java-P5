@@ -1,12 +1,16 @@
 package com.gpot.fr.safetynet.repository.imp;
 
+import static com.gpot.fr.safetynet.utils.AppUtils.asJson;
+
 import com.gpot.fr.safetynet.entity.FireStation;
 import com.gpot.fr.safetynet.repository.FireStationRepository;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Slf4j
 class FireStationRepositoryImp extends DataRepository implements FireStationRepository {
 
   protected static final List<FireStation> FIRE_STATION_LIST = new ArrayList<>();
@@ -20,8 +24,21 @@ class FireStationRepositoryImp extends DataRepository implements FireStationRepo
   @Override
   public void delete(String address) {
     FIRE_STATION_LIST.remove(
-      FIRE_STATION_LIST.stream().filter(p -> p.getAddress().equalsIgnoreCase(address)).findFirst().orElse(null)
+      FIRE_STATION_LIST
+        .stream()
+        .filter(p -> p.getAddress().equalsIgnoreCase(address))
+        .findFirst()
+        .map(fireStation -> {
+          log.info("Firestation at " + address + " deleted");
+          return fireStation;
+        })
+        .orElse(fireStationNotFound())
     );
+  }
+
+  private FireStation fireStationNotFound() {
+    log.error("Firestation not existing in DB and can't be removed");
+    return null;
   }
 
   @Override
@@ -45,7 +62,7 @@ class FireStationRepositoryImp extends DataRepository implements FireStationRepo
       .filter(f -> f.getAddress().equalsIgnoreCase(address))
       .findFirst()
       .map(FireStation::getStation)
-      .orElse(null);
+      .orElse(String.valueOf(fireStationNotFound()));
   }
 
   @Override
@@ -54,7 +71,13 @@ class FireStationRepositoryImp extends DataRepository implements FireStationRepo
       .stream()
       .filter(p -> p.getAddress().equalsIgnoreCase(fireStation.getAddress()))
       .findFirst()
-      .ifPresent(stationFound -> stationFound.setStation(fireStation.getStation()));
+      .ifPresentOrElse(
+        stationFound -> {
+          stationFound.setStation(fireStation.getStation());
+          log.info("Existing Firestation updated " + asJson(fireStation));
+        },
+        () -> log.error("FireStation not existing in DB and hasn't been updated")
+      );
     return fireStation;
   }
 }

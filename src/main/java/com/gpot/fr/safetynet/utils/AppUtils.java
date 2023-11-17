@@ -36,7 +36,11 @@ public class AppUtils {
     return age.getYears();
   }
 
-  public static String asJson(final Object obj) throws JsonProcessingException {
-    return mapper.writeValueAsString(obj);
+  public static String asJson(final Object obj) {
+    try {
+      return mapper.writeValueAsString(obj);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

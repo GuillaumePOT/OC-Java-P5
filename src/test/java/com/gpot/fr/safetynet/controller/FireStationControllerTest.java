@@ -7,8 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gpot.fr.safetynet.dto.FirestationDto;
 import com.gpot.fr.safetynet.service.FireStationService;
 import org.junit.jupiter.api.Test;

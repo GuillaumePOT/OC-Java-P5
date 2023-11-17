@@ -1,12 +1,16 @@
 package com.gpot.fr.safetynet.repository.imp;
 
+import static com.gpot.fr.safetynet.utils.AppUtils.asJson;
+
 import com.gpot.fr.safetynet.entity.Person;
 import com.gpot.fr.safetynet.repository.PersonRepository;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Slf4j
 public class PersonRepositoryImp extends DataRepository implements PersonRepository {
 
   protected static final List<Person> PERSON_LIST = new ArrayList<>();
@@ -24,8 +28,17 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
         .stream()
         .filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
         .findFirst()
-        .orElse(null)
+        .map(person -> {
+          log.info("Person " + lastName + " " + firstName + " deleted");
+          return person;
+        })
+        .orElse(personNotFound())
     );
+  }
+
+  private Person personNotFound() {
+    log.error("Person not existing in DB and can't be removed");
+    return null;
   }
 
   @Override
@@ -42,13 +55,18 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
         p.getLastName().equalsIgnoreCase(person.getLastName())
       )
       .findFirst()
-      .ifPresent(personFound -> {
-        personFound.setAddress(person.getAddress());
-        personFound.setCity(person.getCity());
-        personFound.setZip(person.getZip());
-        personFound.setPhone(person.getPhone());
-        personFound.setEmail(person.getEmail());
-      });
+      .ifPresentOrElse(
+        personFound -> {
+          personFound.setAddress(person.getAddress());
+          personFound.setCity(person.getCity());
+          personFound.setZip(person.getZip());
+          personFound.setPhone(person.getPhone());
+          personFound.setEmail(person.getEmail());
+          log.info("Existing Person updated : " + asJson(person));
+        },
+        () -> log.error("Person not existing in DB and hasn't been updated")
+      );
+
     return person;
   }
 

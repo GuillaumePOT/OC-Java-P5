@@ -1,13 +1,17 @@
 package com.gpot.fr.safetynet.repository.imp;
 
+import static com.gpot.fr.safetynet.utils.AppUtils.asJson;
+
 import com.gpot.fr.safetynet.entity.MedicalRecords;
 import com.gpot.fr.safetynet.entity.Person;
 import com.gpot.fr.safetynet.repository.MedicalRecordsRepository;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Slf4j
 public class MedicalRecordsRepositoryImp extends DataRepository implements MedicalRecordsRepository {
 
   protected static final List<MedicalRecords> MEDICAL_RECORDS_LIST = new ArrayList<>();
@@ -25,8 +29,17 @@ public class MedicalRecordsRepositoryImp extends DataRepository implements Medic
         .stream()
         .filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
         .findFirst()
-        .orElse(null)
+        .map(medicalRecords -> {
+          log.info("MedicalRecords of " + lastName + " " + firstName + " deleted");
+          return medicalRecords;
+        })
+        .orElse(medicalRecordsNotFound())
     );
+  }
+
+  private MedicalRecords medicalRecordsNotFound() {
+    log.error("MedicalRecords not existing in DB and can't be removed");
+    return null;
   }
 
   @Override
@@ -58,11 +71,15 @@ public class MedicalRecordsRepositoryImp extends DataRepository implements Medic
         p.getLastName().equalsIgnoreCase(medicalRecords.getLastName())
       )
       .findFirst()
-      .ifPresent(medicalRecordsFound -> {
-        medicalRecordsFound.setAllergies(medicalRecords.getAllergies());
-        medicalRecordsFound.setBirthdate(medicalRecords.getBirthdate());
-        medicalRecordsFound.setMedications(medicalRecords.getMedications());
-      });
+      .ifPresentOrElse(
+        medicalRecordsFound -> {
+          medicalRecordsFound.setAllergies(medicalRecords.getAllergies());
+          medicalRecordsFound.setBirthdate(medicalRecords.getBirthdate());
+          medicalRecordsFound.setMedications(medicalRecords.getMedications());
+          log.info("Existing MedicalRecords updated : " + asJson(medicalRecords));
+        },
+        () -> log.error("MedicalRecords not existing in DB and hasn't been updated")
+      );
     return medicalRecords;
   }
 }

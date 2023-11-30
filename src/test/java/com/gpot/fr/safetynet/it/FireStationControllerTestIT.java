@@ -1,4 +1,4 @@
-package com.gpot.fr.safetynet.IT;
+package com.gpot.fr.safetynet.it;
 
 import static com.gpot.fr.safetynet.utils.AppUtils.asJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class FireStationControllerTestIT {

@@ -23,22 +23,17 @@ class FireStationRepositoryImp extends DataRepository implements FireStationRepo
 
   @Override
   public void delete(String address) {
-    FIRE_STATION_LIST.remove(
-      FIRE_STATION_LIST
-        .stream()
-        .filter(p -> p.getAddress().equalsIgnoreCase(address))
-        .findFirst()
-        .map(fireStation -> {
+    FIRE_STATION_LIST
+      .stream()
+      .filter(p -> p.getAddress().equalsIgnoreCase(address))
+      .findFirst()
+      .ifPresentOrElse(
+        fireStation -> {
+          FIRE_STATION_LIST.remove(fireStation);
           log.info("Firestation at " + address + " deleted");
-          return fireStation;
-        })
-        .orElse(fireStationNotFound())
-    );
-  }
-
-  private FireStation fireStationNotFound() {
-    log.error("Firestation not existing in DB and can't be removed");
-    return null;
+        },
+        () -> log.error("Firestation not existing in DB and can't be removed")
+      );
   }
 
   @Override
@@ -62,7 +57,7 @@ class FireStationRepositoryImp extends DataRepository implements FireStationRepo
       .filter(f -> f.getAddress().equalsIgnoreCase(address))
       .findFirst()
       .map(FireStation::getStation)
-      .orElse(String.valueOf(fireStationNotFound()));
+      .orElse(null);
   }
 
   @Override

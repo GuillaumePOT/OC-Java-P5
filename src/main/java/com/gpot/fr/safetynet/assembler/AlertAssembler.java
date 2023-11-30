@@ -130,6 +130,18 @@ public class AlertAssembler {
     return childAndFamilyList;
   }
 
+  public List<ChildAndFamilyModel> toModelFindChildByAddress(
+    List<Person> personList,
+    List<MedicalRecords> recordsList
+  ) {
+    return recordsList
+      .stream()
+      .filter(AppUtils::isThereMinor)
+      .findAny()
+      .map(records -> toModelChildAndFamilyList(personList, recordsList))
+      .orElse(new ArrayList<>());
+  }
+
   private ChildAndFamilyModel toModelChildAndFamilyList(Person person, MedicalRecords records) {
     return ChildAndFamilyModel
       .builder()
@@ -152,17 +164,5 @@ public class AlertAssembler {
     List<InhabitantByAddressModel> inhabitantList
   ) {
     return StationNumberAndAssembledList.builder().stationNumber(stationNumber).inhabitantList(inhabitantList).build();
-  }
-
-  public List<ChildAndFamilyModel> toModelFindChildByAddress(
-    List<Person> personList,
-    List<MedicalRecords> recordsList
-  ) {
-    return recordsList
-      .stream()
-      .filter(AppUtils::isThereMinor)
-      .findAny()
-      .map(records -> toModelChildAndFamilyList(personList, recordsList))
-      .orElse(new ArrayList<>());
   }
 }

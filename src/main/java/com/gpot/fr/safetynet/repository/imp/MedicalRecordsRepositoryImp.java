@@ -24,22 +24,17 @@ public class MedicalRecordsRepositoryImp extends DataRepository implements Medic
 
   @Override
   public void delete(String firstName, String lastName) {
-    MEDICAL_RECORDS_LIST.remove(
-      MEDICAL_RECORDS_LIST
-        .stream()
-        .filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
-        .findFirst()
-        .map(medicalRecords -> {
+    MEDICAL_RECORDS_LIST
+      .stream()
+      .filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
+      .findFirst()
+      .ifPresentOrElse(
+        medicalRecords -> {
+          MEDICAL_RECORDS_LIST.remove(medicalRecords);
           log.info("MedicalRecords of " + lastName + " " + firstName + " deleted");
-          return medicalRecords;
-        })
-        .orElse(medicalRecordsNotFound())
-    );
-  }
-
-  private MedicalRecords medicalRecordsNotFound() {
-    log.error("MedicalRecords not existing in DB and can't be removed");
-    return null;
+        },
+        () -> log.error("MedicalRecords not existing in DB and can't be removed")
+      );
   }
 
   @Override

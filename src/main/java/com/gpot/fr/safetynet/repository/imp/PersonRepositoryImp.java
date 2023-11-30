@@ -23,22 +23,17 @@ public class PersonRepositoryImp extends DataRepository implements PersonReposit
 
   @Override
   public void delete(String firstName, String lastName) {
-    PERSON_LIST.remove(
-      PERSON_LIST
-        .stream()
-        .filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
-        .findFirst()
-        .map(person -> {
+    PERSON_LIST
+      .stream()
+      .filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName))
+      .findFirst()
+      .ifPresentOrElse(
+        person -> {
+          PERSON_LIST.remove(person);
           log.info("Person " + lastName + " " + firstName + " deleted");
-          return person;
-        })
-        .orElse(personNotFound())
-    );
-  }
-
-  private Person personNotFound() {
-    log.error("Person not existing in DB and can't be removed");
-    return null;
+        },
+        () -> log.error("Person not existing in DB and can't be removed")
+      );
   }
 
   @Override

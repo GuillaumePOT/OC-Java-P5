@@ -26,10 +26,10 @@ public class MedicalRecordsController {
     return new ResponseEntity<>(medicalRecords, HttpStatus.CREATED);
   }
 
-  @DeleteMapping("/medicalRecord/{lastName}/{firstName}")
+  @DeleteMapping("/medicalRecord")
   public ResponseEntity<Void> delete(
-    @PathVariable(name = "firstName") String firstName,
-    @PathVariable(name = "lastName") String lastName
+    @RequestParam(name = "firstName") String firstName,
+    @RequestParam(name = "lastName") String lastName
   ) {
     log.info("User call to method delete MedicalRecord");
     medicalRecordsService.delete(firstName, lastName);

@@ -37,7 +37,10 @@ class MedicalRecordsControllerTest {
 
   @Test
   void deleteMedicalRecordTest() throws Exception {
-    mockMvc.perform(delete("/medicalRecord/lastName/firstName")).andDo(print()).andExpect(status().isNoContent());
+    mockMvc
+      .perform(delete("/medicalRecord").param("lastName", "firstName").param("firstName", "firstName"))
+      .andDo(print())
+      .andExpect(status().isNoContent());
     verify(medicalRecordsService).delete(any(), any());
   }
 

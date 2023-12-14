@@ -35,8 +35,8 @@ public class FireStationController {
     return new ResponseEntity<>(fireStation, HttpStatus.CREATED);
   }
 
-  @DeleteMapping("/firestation/{address}")
-  public ResponseEntity<FireStation> delete(@PathVariable(name = "address") String address) {
+  @DeleteMapping("/firestation")
+  public ResponseEntity<FireStation> delete(@RequestParam(name = "address") String address) {
     log.info("User call to method delete Firestation");
     fireStationService.delete(address);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);

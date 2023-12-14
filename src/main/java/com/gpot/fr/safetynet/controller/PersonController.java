@@ -26,10 +26,10 @@ public class PersonController {
     return new ResponseEntity<>(person, HttpStatus.CREATED);
   }
 
-  @DeleteMapping("/person/{lastName}/{firstName}")
+  @DeleteMapping("/person")
   public ResponseEntity<Void> delete(
-    @PathVariable(name = "firstName") String firstName,
-    @PathVariable(name = "lastName") String lastName
+    @RequestParam(name = "firstName") String firstName,
+    @RequestParam(name = "lastName") String lastName
   ) {
     log.info("User call to method delete Person");
     personService.delete(firstName, lastName);

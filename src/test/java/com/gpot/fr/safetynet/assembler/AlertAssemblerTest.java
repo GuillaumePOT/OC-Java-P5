@@ -139,14 +139,14 @@ class AlertAssemblerTest {
   void itShouldToModelChildAndFamilyList() {
     final var listOfPerson = List.of(Person.builder().firstName("firstName").lastName("lastName").build());
     final var listOfMedicalRecords = List.of(
-      MedicalRecords.builder().firstName("firstName").lastName("lastName").birthdate(majorDate).build()
+      MedicalRecords.builder().firstName("firstName").lastName("lastName").birthdate(minorDate).build()
     );
-    List<ChildAndFamilyModel> result = alertAssembler.toModelChildAndFamilyList(listOfPerson, listOfMedicalRecords);
+    List<ChildAndFamilyModel> result = alertAssembler.toModelFindChildByAddress(listOfPerson, listOfMedicalRecords);
     assertFalse(result.isEmpty());
     final var model = result.get(0);
     assertEquals("firstName", model.getFirstName());
     assertEquals("lastName", model.getLastName());
-    assertEquals(20, model.getAge());
+    assertEquals(16, model.getAge());
   }
 
   @Test

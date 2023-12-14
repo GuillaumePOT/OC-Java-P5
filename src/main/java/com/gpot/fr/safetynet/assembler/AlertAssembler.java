@@ -115,40 +115,48 @@ public class AlertAssembler {
       .build();
   }
 
-  public List<ChildAndFamilyModel> toModelChildAndFamilyList(
-    List<Person> personList,
-    List<MedicalRecords> recordsList
-  ) {
-    final var childAndFamilyList = new ArrayList<ChildAndFamilyModel>();
-    personList.forEach(person ->
-      recordsList
-        .stream()
-        .filter(m -> m.getFirstName().equalsIgnoreCase(person.getFirstName()))
-        .findFirst()
-        .ifPresent(m -> childAndFamilyList.add(this.toModelChildAndFamilyList(person, m)))
-    );
-    return childAndFamilyList;
-  }
-
   public List<ChildAndFamilyModel> toModelFindChildByAddress(
     List<Person> personList,
     List<MedicalRecords> recordsList
   ) {
-    return recordsList
-      .stream()
-      .filter(AppUtils::isThereMinor)
-      .findAny()
-      .map(records -> toModelChildAndFamilyList(personList, recordsList))
-      .orElse(new ArrayList<>());
+    final var childList = recordsList.stream().filter(AppUtils::isThereMinor).toList();
+    if (childList.isEmpty()) {
+      return new ArrayList<>();
+    } else {
+      return childList
+        .stream()
+        .map(records ->
+          personList
+            .stream()
+            .filter(person ->
+              person.getFirstName().equalsIgnoreCase(records.getFirstName()) &&
+              person.getLastName().equalsIgnoreCase(records.getLastName())
+            )
+            .findFirst()
+            .map(person ->
+              ChildAndFamilyModel
+                .builder()
+                .firstName(person.getFirstName())
+                .lastName(person.getLastName())
+                .age(calculateAge(records))
+                .otherFamilyMember(buildOtherfamilyMember(personList, person))
+                .build()
+            )
+            .orElse(null)
+        )
+        .toList();
+    }
   }
 
-  private ChildAndFamilyModel toModelChildAndFamilyList(Person person, MedicalRecords records) {
-    return ChildAndFamilyModel
-      .builder()
-      .firstName(person.getFirstName())
-      .lastName(person.getLastName())
-      .age(calculateAge(records))
-      .build();
+  private List<ChildAndFamilyModel.PersonModel> buildOtherfamilyMember(List<Person> personList, Person person) {
+    final var restOfFamily = new ArrayList<>(personList);
+    restOfFamily.removeIf(p ->
+      p.getLastName().equalsIgnoreCase(person.getLastName()) && p.getFirstName().equalsIgnoreCase(person.getFirstName())
+    );
+    return restOfFamily
+      .stream()
+      .map(p -> ChildAndFamilyModel.PersonModel.builder().firstName(p.getFirstName()).lastName(p.getLastName()).build())
+      .toList();
   }
 
   public CountAndAssembledList toModelCountAndAssembledList(

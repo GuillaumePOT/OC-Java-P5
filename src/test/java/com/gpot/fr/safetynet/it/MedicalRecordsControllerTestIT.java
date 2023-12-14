@@ -59,7 +59,10 @@ class MedicalRecordsControllerTestIT {
   @Test
   void itShouldDelete() throws Exception {
     assertEquals(23, repository.findAll().size());
-    mockMvc.perform(delete("/medicalRecord/Boyd/John")).andDo(print()).andExpect(status().isNoContent());
+    mockMvc
+      .perform(delete("/medicalRecord").param("lastName", "Boyd").param("firstName", "John"))
+      .andDo(print())
+      .andExpect(status().isNoContent());
     assertEquals(22, repository.findAll().size());
   }
 

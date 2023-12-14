@@ -68,10 +68,11 @@ class AlertControllerTestIT {
       .andReturn();
     final var result = getMapper()
       .readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ChildAndFamilyModel>>() {});
-    assertEquals(3, result.size());
+    assertEquals(1, result.size());
     assertEquals("Zach", result.get(0).getFirstName());
     assertEquals("Zemicks", result.get(0).getLastName());
     assertEquals(6, result.get(0).getAge());
+    assertEquals(2, result.get(0).getOtherFamilyMember().size());
   }
 
   @Test

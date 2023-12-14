@@ -55,7 +55,10 @@ class FireStationControllerTestIT {
   @Test
   void itShouldDelete() throws Exception {
     assertEquals(13, repository.findAll().size());
-    mockMvc.perform(delete("/firestation/1509 Culver St")).andDo(print()).andExpect(status().isNoContent());
+    mockMvc
+      .perform(delete("/firestation").param("address", "1509 Culver St"))
+      .andDo(print())
+      .andExpect(status().isNoContent());
     assertEquals(12, repository.findAll().size());
   }
 

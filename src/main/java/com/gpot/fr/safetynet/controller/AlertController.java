@@ -10,7 +10,6 @@ import com.gpot.fr.safetynet.service.FireStationService;
 import com.gpot.fr.safetynet.service.MedicalRecordsService;
 import com.gpot.fr.safetynet.service.PersonService;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +63,6 @@ public class AlertController {
     List<Person> personList = personService.findPersonByAddress(address);
     List<MedicalRecords> recordsList = medicalRecordsService.findRecordsByPersonList(personList);
     List<ChildAndFamilyModel> childList = alertAssembler.toModelFindChildByAddress(personList, recordsList);
-    childList.sort(Comparator.comparing(ChildAndFamilyModel::getAge));
     log.info(asJson(childList));
     return new ResponseEntity<>(childList, HttpStatus.OK);
   }

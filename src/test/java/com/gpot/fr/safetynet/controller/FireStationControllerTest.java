@@ -37,7 +37,10 @@ class FireStationControllerTest {
 
   @Test
   void deleteFireStationTest() throws Exception {
-    mockMvc.perform(delete("/firestation/addressToDelete")).andDo(print()).andExpect(status().isNoContent());
+    mockMvc
+      .perform(delete("/firestation").param("address", "addressToDelete"))
+      .andDo(print())
+      .andExpect(status().isNoContent());
     verify(fireStationService).delete(any());
   }
 

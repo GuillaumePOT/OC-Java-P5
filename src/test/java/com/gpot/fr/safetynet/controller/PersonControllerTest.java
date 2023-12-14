@@ -37,7 +37,10 @@ class PersonControllerTest {
 
   @Test
   void deletePersonTest() throws Exception {
-    mockMvc.perform(delete("/person/lastName/firstName")).andDo(print()).andExpect(status().isNoContent());
+    mockMvc
+      .perform(delete("/person").param("lastName", "firstName").param("firstName", "firstName"))
+      .andDo(print())
+      .andExpect(status().isNoContent());
     verify(personService).delete(any(), any());
   }
 
